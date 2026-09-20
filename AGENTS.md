@@ -2,7 +2,7 @@
 
 ## What this repo is
 
-A Node ESM CLI (`bin/index.js`, name `falak-app`) that scaffolds a Vue 3 app by
+A Node ESM CLI (`bin/falak-app-duo`, name `falak-app`) that scaffolds a Vue 3 app by
 copying `templates/default/`. The repo is **not** a Vue app — the actual app
 (and its own `package.json` with Vue/Pinia/axios deps) lives entirely in
 `templates/default/`. Root `package.json` deps only cover the CLI
@@ -11,14 +11,14 @@ copying `templates/default/`. The repo is **not** a Vue app — the actual app
 ## Commands
 
 - No lint, test, or typecheck scripts exist anywhere (root or template).
-- Run the CLI: `node bin/index.js <name> --yes` (interactive if no `--yes`).
+- Run the CLI: `node bin/falak-app-duo <name> --yes` (interactive if no `--yes`).
 - Smoke-test by scaffolding into a temp dir, then
   `cd <name> && npm install && npm run build` inside the generated project.
 - Right package: root runs the scaffolder; `templates/default/` is the Vue app.
 
 ## Scaffolder invariants (edit carefully)
 
-- `bin/index.js` copies the template, rewrites the copied `package.json`
+- `bin/falak-app-duo` copies the template, rewrites the copied `package.json`
   `name`, deletes unselected service files, and generates `.env` from
   `.env.example` by substituting `__API_BASE_URL__`, `__AES_KEY__` (32-byte
   hex), `__AES_IV__` (16-byte hex). Any new generated env var must follow this

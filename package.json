@@ -1,10 +1,10 @@
 {
   "name": "falak-app-duo",
   "version": "1.0.0",
-  "description": "Vue 3 boilerplate scaffolder \u2014 Ably (realtime), Brevo, AES-256, Arabic/RTL, and a Laravel API client (API key + user token auth). No Firebase, no Groq/Paymob on the frontend (Groq is backend-only; Paymob dropped).",
+  "description": "Vue 3 boilerplate scaffolder — Ably (realtime), Brevo, AES-256, Arabic/RTL, and a Laravel API client (API key + user token auth). No Firebase, no Groq/Paymob on the frontend (Groq is backend-only; Paymob dropped).",
   "type": "module",
   "bin": {
-    "falak-app-duo": "./bin/index.js"
+    "falak-app-duo": "bin/falak-app-duo"
   },
   "files": [
     "bin",

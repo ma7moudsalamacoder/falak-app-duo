@@ -76,8 +76,8 @@ similar) validating the bearer token for user-scoped routes.
 ## Usage
 
 ```bash
-node bin/index.js my-project        # interactive prompts
-node bin/index.js my-project --yes  # defaults: Ably + Brevo, localhost API
+node bin/falak-app-duo my-project        # interactive prompts
+node bin/falak-app-duo my-project --yes  # defaults: Ably + Brevo, localhost API
 ```
 
 Once published to npm you'd run it as `npx falak-app-duo my-project`.
