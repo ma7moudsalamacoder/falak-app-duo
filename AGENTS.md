@@ -12,16 +12,29 @@ copying `templates/default/`. The repo is **not** a Vue app — the actual app
 
 - No lint, test, or typecheck scripts exist anywhere (root or template).
 - Run the CLI: `node bin/falak-app-duo <name> --yes` (interactive if no `--yes`).
-- `--no-rtl` (or answering the RTL prompt "no") **strips RTL** from the copied
-  app: `index.html` → `lang="en" dir="ltr"`; `src/i18n/index.js` is rewritten
-  English-only (no `setLocale`/dir flipping); `locales/ar.json` is deleted; and
-  the AR/EN toggle + `locale`/`toggleLocale` are removed from `App.vue`. Keep
-  these exact strings stable or the replacements silently break.
+- The interactive flow asks which languages the app should ship with (English is
+  always included; Arabic is the default extra and the RTL language). `--no-rtl`
+  forces Arabic out (LTR only). Scaffolding slices the app to exactly the
+  selected languages: `index.html` → `lang`/`dir` match; `src/i18n/index.js` is
+  regenerated with only the chosen bundles; unselected `locales/*.json` are
+  deleted; and when only English remains the language switcher is stripped from
+  `App.vue`. Keep the `App.vue` strings `import { setLocale, SUPPORTED_LOCALES }`,
+  `const { t, locale } = useI18n();`, `const locales = SUPPORTED_LOCALES;`, and
+  the `<select v-if="locales.length > 1">` switcher stable or the replacements
+  silently break.
 - After scaffolding the CLI prompts to auto-run `npm install` (and optionally
   `npm run dev`); `--yes` runs `npm install` automatically. Don't add install
   logic elsewhere.
 - Smoke-test by scaffolding into a temp dir, then
   `cd <name> && npm install && npm run build` inside the generated project.
+- `main()` in `bin/falak-app-duo` is only run when `isMain()` matches: it
+  compares `realpathSync(process.argv[1])` to `import.meta.url`. This exists so
+  the CLI can be imported as a library (tests use `buildI18nModule`), but
+  `npx`/`npm exec` spawn the bin through the `node_modules/.bin/<name>` symlink,
+  so a naive `argv[1] === import.meta.url` check silently skips `main()`. Keep
+  the `realpathSync` comparison (and the `try/catch` for import cases) or npx
+  installs produce no output and exit immediately. Test real npx spawns with
+  `npm exec --yes --package=<packed-tarball> -- falak-app-duo <name>` via a pty.
 - Right package: root runs the scaffolder; `templates/default/` is the Vue app.
 
 ## Scaffolder invariants (edit carefully)
@@ -37,6 +50,14 @@ copying `templates/default/`. The repo is **not** a Vue app — the actual app
 - Keep `ably.js` wiring channel auth through the shared `api` axios client
   (`api.post("/broadcasting/auth")`) — the same `X-API-Key` + bearer headers
   gate realtime auth.
+- Settings live on ONE authed route `src/views/SettingsView.vue` (`/settings`);
+  each section (security, two-factor, notifications, AI agent, telegram) opens
+  as a dialog. The dialog bodies are `src/components/settings/*Dialog.vue`
+  rendered inside the shared `SettingsDialog.vue` modal shell (Teleport,
+  Esc/overlay close, scroll lock). Don't reintroduce separate settings routes or
+  navigation links for individual sections; `App.vue` lists only Profile and
+  Settings in its nav. `SecurityDialog` swaps to the two-factor dialog by
+  emitting `open-two-factor` (no RouterLink).
 
 ## Auth / security model (do not break)
 
@@ -56,7 +77,11 @@ never ships to the browser; client code only calls your own `/brevo/*` routes.
 
 ## i18n / RTL
 
-Arabic is the default locale (`ar`), set on load in `src/i18n/index.js`;
-`setLocale` flips `document.documentElement.dir` between `rtl`/`ltr`.
-`postcss-rtlcss` mirrors Tailwind utility classes when `dir="rtl"`. Test UI
-with RTL in mind.
+Arabic is the default locale (`ar`) when it ships, set on load in
+`src/i18n/index.js`; the generated module exports `SUPPORTED_LOCALES` (the
+drop-down choices in `App.vue`) and `setLocale` flips
+`document.documentElement.dir` between `rtl`/`ltr` (`"ar"` is the only RTL
+locale — everything else is LTR). `postcss-rtlcss` mirrors Tailwind utility
+classes when `dir="rtl"`. Test UI with RTL in mind. All 7 bundles
+(`ar`, `de`, `en`, `es`, `fr`, `ru`, `it`) must keep identical key structure —
+a new key in one JSON must exist in all of them.

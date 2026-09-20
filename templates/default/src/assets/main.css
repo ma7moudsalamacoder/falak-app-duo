@@ -2,7 +2,146 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
-  font-family: "Almarai", "IBM Plex Sans Arabic", sans-serif;
+/* Registered once for the animated gradient-border effect (Tailwind v3 has no
+   @property in config, so it lives here in plain CSS next to the keyframes). */
+@property --tw-border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes border-spin {
+  to {
+    --tw-border-angle: 360deg;
+  }
+}
+
+@keyframes ripple-expand {
+  to {
+    transform: translate(-50%, -50%) scale(20);
+    opacity: 0;
+  }
+}
+
+@layer base {
+  html,
+  body {
+    font-family: "Almarai", "IBM Plex Sans Arabic", sans-serif;
+    background-color: #0b0f19;
+  }
+  body {
+    color: rgb(243 244 246 / 1);
+  }
+  ::selection {
+    background: rgb(16 185 129 / 0.35);
+    color: #fff;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255 255 255 / 0.14) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: rgb(255 255 255 / 0.14);
+  }
+}
+
+@layer components {
+  /* Reusable glass surfaces — the app's core visual language */
+  .glass-card {
+    @apply relative rounded-2xl border border-white/10 bg-white/[0.05] shadow-2xl shadow-black/30 backdrop-blur-xl backdrop-saturate-150;
+  }
+  .glass-card-hover {
+    @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.08] hover:shadow-emerald-500/10;
+  }
+
+  /* Fine hairline top highlight so glass reads as "lit" from above */
+  .glass-highlight {
+    @apply relative overflow-hidden;
+  }
+  .glass-highlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.08) 0%,
+      rgb(255 255 255 / 0) 32%
+    );
+    pointer-events: none;
+  }
+
+  .glass-input {
+    @apply w-full rounded-xl border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-gray-100 placeholder-gray-500 outline-none ring-1 ring-transparent transition focus:border-emerald-400/50 focus:bg-white/[0.08] focus:ring-2 focus:ring-emerald-400/20;
+  }
+  .glass-select {
+    @apply glass-input appearance-none pe-10;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 8l5 5 5-5' stroke='%239ca3af' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    background-size: 1.1rem;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 bg-[length:200%_200%] px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 ring-1 ring-white/10 transition-all duration-200 hover:brightness-110 hover:shadow-emerald-400/40 hover:ring-white/20 animate-gradient-pan motion-reduce:animate-none disabled:cursor-not-allowed disabled:opacity-50 active:translate-y-px;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-gray-200 shadow-sm backdrop-blur transition-all duration-200 hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  /* Bright brand accent button — CTA on auth/settings pages */
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-[length:200%_200%] px-4 py-2.5 text-sm font-semibold text-amber-950 shadow-lg shadow-amber-500/25 transition-all duration-200 hover:brightness-110 hover:shadow-amber-400/40 animate-gradient-pan motion-reduce:animate-none disabled:cursor-not-allowed disabled:opacity-50 active:translate-y-px;
+  }
+
+  /* Ripple-ready fill button (JS spawns the span, classes live here) */
+  .btn-ripple {
+    @apply relative isolate overflow-hidden;
+  }
+  .ripple {
+    @apply pointer-events-none absolute rounded-full bg-white/40;
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple-expand 0.6s ease-out forwards;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium text-gray-300;
+  }
+  .field-hint {
+    @apply mt-1 block text-xs text-gray-500;
+  }
+
+  /* Two-stop gradient headline text (2 stops only — 3+ reads muddy at text size) */
+  .text-gradient {
+    @apply bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300 bg-clip-text text-transparent;
+  }
+  .text-gradient-warm {
+    @apply bg-gradient-to-r from-amber-200 via-orange-300 to-rose-300 bg-clip-text text-transparent;
+  }
+
+  /* Small pill / chip */
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-gray-300;
+  }
+
+  /* Section heading with gradient marker bar */
+  .section-head {
+    @apply flex items-center gap-3;
+  }
+  .section-head::before {
+    content: "";
+    @apply h-5 w-1 rounded-full bg-gradient-to-b from-emerald-400 to-cyan-400;
+  }
+
+  /* Fine dotted grid used by the backdrop and hero */
+  .bg-grid {
+    background-image: radial-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
 }

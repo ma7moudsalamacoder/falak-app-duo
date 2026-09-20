@@ -1,0 +1,341 @@
+{
+  "app": {
+    "name": "Falak"
+  },
+  "common": {
+    "loading": "Lädt...",
+    "saving": "Speichert...",
+    "saved": "Gespeichert",
+    "save": "Speichern",
+    "back": "Zurück",
+    "cancel": "Abbrechen",
+    "pleaseWait": "Bitte warten..."
+  },
+  "nav": {
+    "home": "Start",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "security": "Sicherheit",
+    "twoFactor": "2FA",
+    "notifications": "Benachrichtigungen",
+    "aiAgent": "KI-Agent",
+    "telegram": "Telegram"
+  },
+  "auth": {
+    "login": {
+      "title": "Willkommen zurück",
+      "subtitle": "Melde dich bei deinem Konto an",
+      "submit": "Anmelden"
+    },
+    "identifier": "E-Mail oder Telefon",
+    "identifierPlaceholder": "du@beispiel.de oder +201234567890",
+    "identifierHint": "Wir akzeptieren entweder deine E-Mail-Adresse oder deine Mobilnummer.",
+    "password": "Passwort",
+    "passwordPlaceholder": "••••••••",
+    "email": "E-Mail",
+    "emailPlaceholder": "du@beispiel.de",
+    "phone": "Telefon",
+    "phonePlaceholder": "+201234567890",
+    "tabEmail": "E-Mail",
+    "tabPhone": "Telefon",
+    "remember": "Angemeldet bleiben",
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort ausblenden",
+    "forgotPassword": "Passwort vergessen?",
+    "loginError": "Ungültige Anmeldedaten. Überprüfe E-Mail/Telefon und Passwort.",
+    "socialError": "Soziale Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+    "or": "oder weiter mit",
+    "social": {
+      "google": "Gmail",
+      "facebook": "Facebook"
+    },
+    "noAccount": "Noch kein Konto?",
+    "registerLink": "Jetzt erstellen",
+    "brand": {
+      "badge": "Produktionsreifes Starterpaket",
+      "headline1": "Alles, was du brauchst,",
+      "headline2": "schon verbunden.",
+      "tagline": "Echtzeit-Chat, transaktionale E-Mails, AES-256 sichere Anmeldung und ein KI-Agent — gebündelt in einem Vue-3- und Laravel-Starter.",
+      "footer": "Vue 3 · Laravel · Ably · Brevo · Groq"
+    }
+  },
+  "register": {
+    "title": "Konto erstellen",
+    "subtitle": "In weniger als einer Minute dabei sein",
+    "name": "Vollständiger Name",
+    "namePlaceholder": "Dein Name",
+    "identifier": "E-Mail oder Telefon",
+    "identifierPlaceholder": "du@beispiel.de oder +201234567890",
+    "identifierHint": "Dein Anmelde-Identifikator. Wir akzeptieren E-Mail oder Mobilnummer.",
+    "email": "E-Mail",
+    "emailPlaceholder": "du@beispiel.de",
+    "phone": "Telefon",
+    "phonePlaceholder": "+201234567890",
+    "phoneHint": "Optional — wird für SMS-Benachrichtigungen und als alternativer Anmelde-Identifikator verwendet.",
+    "socialGoogle": "Mit Gmail registrieren",
+    "socialFacebook": "Mit Facebook registrieren",
+    "password": "Passwort",
+    "passwordPlaceholder": "Mindestens 8 Zeichen",
+    "confirm": "Passwort bestätigen",
+    "confirmPlaceholder": "Passwort wiederholen",
+    "mismatch": "Die Passwörter stimmen nicht überein.",
+    "error": "Registrierung fehlgeschlagen. Bitte versuche es erneut.",
+    "submit": "Konto erstellen",
+    "haveAccount": "Du hast bereits ein Konto?",
+    "loginLink": "Anmelden",
+    "strength": {
+      "0": "Sehr schwach",
+      "1": "Schwach",
+      "2": "Mittel",
+      "3": "Gut",
+      "4": "Stark"
+    }
+  },
+  "recover": {
+    "title": "Passwort wiederherstellen",
+    "subtitle": "Wir senden dir einen Link zum Zurücksetzen",
+    "identifier": "E-Mail oder Telefon",
+    "identifierPlaceholder": "du@beispiel.de oder +201234567890",
+    "identifierHint": "Gib die E-Mail oder Telefonnummer ein, die mit deinem Konto verknüpft ist.",
+    "submit": "Link senden",
+    "sentTitle": "Prüfe deinen Posteingang",
+    "sent": "Falls ein Konto mit diesem Identifikator existiert, wurde ein Link zum Zurücksetzen an dich gesendet.",
+    "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "backToLogin": "Zurück zur Anmeldung"
+  },
+  "home": {
+    "badge": "Vue 3 · Laravel · Ably · Brevo",
+    "title": "Der Falak Stack",
+    "subtitle": "Ein produktionsreifes Starterpaket mit Echtzeit-Chat, transaktionalen E-Mails, AES-256-Sicherheit und Mehrsprachigkeit sofort einsatzbereit.",
+    "ctaRegister": "Konto erstellen",
+    "ctaLogin": "Anmelden",
+    "ctaProfile": "Zum Profil",
+    "rotator": {
+      "1": "Echtzeit-Chat über Ably",
+      "2": "Sichere Anmeldung mit AES-256",
+      "3": "Groq-KI-Agent bereit",
+      "4": "Arabisch und RTL standardmäßig"
+    },
+    "stats": {
+      "1": "Starter-Nutzer",
+      "2": "Verfügbarkeit",
+      "3": "Angebundene Dienste",
+      "4": "Support"
+    },
+    "cta": {
+      "title": "Starte deine Idee noch heute",
+      "subtitle": "Kopiere das Gerüst, fülle deine API-Schlüssel aus und baue auf einem Stack auf, der bereits funktioniert."
+    },
+    "features": {
+      "realtime": {
+        "title": "Echtzeit",
+        "desc": "Live-Updates und Chat, angebunden über Ably und Laravel Echo."
+      },
+      "brevo": {
+        "title": "E-Mail & SMS",
+        "desc": "Transaktionale E-Mail- und SMS-Abläufe über Brevo."
+      },
+      "security": {
+        "title": "AES-256",
+        "desc": "Tokens werden im Browser verschlüsselt gespeichert. API-Key + Bearer-Authentifizierung."
+      },
+      "agent": {
+        "title": "KI-Agent",
+        "desc": "Einstellungen für den Groq-KI-Agenten sind bereit zur Konfiguration."
+      }
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "subtitle": "Verwalte deine persönlichen Daten und bevorzugten Kontaktkanäle.",
+    "save": "Änderungen speichern",
+    "saveError": "Dein Profil konnte nicht gespeichert werden.",
+    "saved": "Profil aktualisiert",
+    "name": "Vollständiger Name",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "phonePlaceholder": "+201234567890",
+    "phoneHint": "Deine Telefonnummer wird für SMS-Benachrichtigungen und als optionaler Anmelde-Identifikator verwendet.",
+    "country": "Land",
+    "countryPlaceholder": "Wähle dein Land",
+    "city": "Stadt",
+    "cityPlaceholder": "Wähle deine Stadt",
+    "countryFirst": "Wähle zuerst ein Land",
+    "location": {
+      "title": "Standort",
+      "available": "Städte für dieses Land verfügbar",
+      "none": "Für dieses Land sind noch keine Städte hinterlegt."
+    },
+    "photo": {
+      "label": "Profilbild",
+      "hint": "JPG oder PNG. Wird sicher mit deinem Profil gespeichert.",
+      "change": "Bild ändern"
+    },
+    "removePhoto": "Bild entfernen",
+    "channel": {
+      "title": "Kommunikationskanal",
+      "hint": "Wähle einen zusätzlichen Kanal neben der E-Mail für Updates.",
+      "none": "Nur E-Mail",
+      "telegram": "Telegram",
+      "whatsapp": "WhatsApp",
+      "telegramHandle": "Telegram-Benutzername",
+      "whatsappHandle": "WhatsApp-Nummer",
+      "telegramPlaceholder": "@deinusername",
+      "whatsappPlaceholder": "+201234567890"
+    }
+  },
+  "security": {
+    "title": "Sicherheit",
+    "subtitle": "Passwort und Kontoschutz.",
+    "currentPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Neues Passwort bestätigen",
+    "mismatch": "Die neuen Passwörter stimmen nicht überein.",
+    "passwordError": "Passwort konnte nicht geändert werden. Überprüfe dein aktuelles Passwort.",
+    "passwordChanged": "Passwort erfolgreich geändert.",
+    "changePassword": {
+      "title": "Passwort ändern",
+      "hint": "Verwende mindestens 8 Zeichen mit einer Mischung aus Buchstaben und Zahlen.",
+      "submit": "Passwort aktualisieren"
+    },
+    "protection": {
+      "title": "Kontoschutz",
+      "hint": "Zusätzliche Schutzschichten für dein Konto."
+    },
+    "twoFactor": {
+      "title": "Zwei-Faktor-Authentifizierung",
+      "hint": "Füge deinem Konto eine zusätzliche Sicherheitsebene hinzu."
+    },
+    "configure": "Konfigurieren",
+    "sessions": {
+      "title": "Aktive Sitzungen",
+      "hint": "Überprüfe Geräte, auf denen du angemeldet bist.",
+      "current": "Aktuelle Sitzung",
+      "currentBadge": "Dieses Gerät",
+      "revoke": "Widerrufen"
+    },
+    "view": "Ansehen"
+  },
+  "twoFactor": {
+    "title": "Zwei-Faktor-Authentifizierung",
+    "subtitle": "Schütze dein Konto mit einem Einmalcode.",
+    "status": "Status",
+    "on": "Aktiviert",
+    "off": "Deaktiviert",
+    "method": "Verifizierungsmethode",
+    "methodApp": "Authenticator-App",
+    "methodSms": "SMS",
+    "enable": "2FA aktivieren",
+    "codePlaceholder": "6-stelliger Code",
+    "confirm": "Verifizieren & aktivieren",
+    "disable": "2FA deaktivieren",
+    "disableHint": "Gib deinen Code ein, um die Zwei-Faktor-Authentifizierung zu deaktivieren.",
+    "codesTitle": "Wiederherstellungscodes",
+    "codesHint": "Bewahre sie sicher auf — jeder Code funktioniert einmal, um dich anzumelden, falls du dein Gerät verlierst.",
+    "secretLabel": "Notfallcode",
+    "secretHint": "Bewahre ihn sicher auf. Du brauchst ihn zum Anmelden, falls du dein Gerät verlierst.",
+    "pendingLabel": "Eine Verifizierungsherausforderung wurde erstellt. Gib den Code ein.",
+    "enterCode": "Gib den 6-stelligen Code zur Bestätigung ein.",
+    "enabled": "Zwei-Faktor-Authentifizierung ist jetzt aktiviert.",
+    "disabled": "Zwei-Faktor-Authentifizierung wurde deaktiviert.",
+    "error": "Bei der Zwei-Faktor-Authentifizierung ist etwas schiefgelaufen."
+  },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "subtitle": "Wähle, wie du Updates erhalten möchtest.",
+    "category": "Kategorie",
+    "save": "Einstellungen speichern",
+    "saveError": "Benachrichtigungseinstellungen konnten nicht gespeichert werden.",
+    "saved": "Einstellungen gespeichert",
+    "channels": {
+      "email": "E-Mail",
+      "push": "Push",
+      "sms": "SMS",
+      "telegram": "Telegram"
+    },
+    "desc": {
+      "email": "E-Mail-Updates",
+      "push": "In-App-Push",
+      "sms": "Textnachricht",
+      "telegram": "Telegram-Bot"
+    },
+    "categories": {
+      "account": "Konto",
+      "security": "Sicherheit",
+      "marketing": "Marketing",
+      "updates": "Produktupdates"
+    },
+    "categoryDesc": {
+      "account": "Anmeldung, Profil und Abrechnung",
+      "security": "Passwort-, 2FA- und Sitzungswarnungen",
+      "marketing": "Aktionen und Angebote",
+      "updates": "Neue Funktionen und Versionen"
+    }
+  },
+  "aiAgent": {
+    "title": "KI-Agent",
+    "subtitle": "Konfiguriere deinen Groq-basierten Assistenten.",
+    "save": "Agenteneinstellungen speichern",
+    "saveError": "Agenteneinstellungen konnten nicht gespeichert werden.",
+    "saved": "Agenteneinstellungen gespeichert",
+    "key": {
+      "title": "Hole dir einen kostenlosen Groq-API-Schlüssel",
+      "subtitle": "Dauert etwa 2 Minuten",
+      "steps": {
+        "1": "Gehe auf console.groq.com und erstelle ein kostenloses Konto (oder melde dich an).",
+        "2": "Öffne \"API Keys\" in der Seitenleiste und klicke auf \"Create API Key\".",
+        "3": "Gib ihm einen Namen, erstelle ihn und kopiere den Schlüssel, der nur einmal angezeigt wird.",
+        "4": "Füge ihn als GROQ_API_KEY in die .env deines Backends ein — das Frontend speichert ihn nie."
+      },
+      "note": "Sicherheitshinweis: Der API-Schlüssel wird serverseitig aufbewahrt. Das Frontend speichert nur die untenstehenden Verhaltenseinstellungen des Agenten."
+    },
+    "settings": {
+      "title": "Agentenverhalten",
+      "hint": "Diese Einstellungen formen, wie dein Assistent antwortet."
+    },
+    "model": "Modell",
+    "temperature": "Kreativität",
+    "temperatureLow": "Präzise",
+    "temperatureHigh": "Kreativ",
+    "systemPrompt": "System-Prompt",
+    "systemPromptPlaceholder": "Du bist ein hilfreicher Assistent für einen Falak-App-Nutzer...",
+    "reasoning": "Reasoning aktivieren"
+  },
+  "telegram": {
+    "title": "Telegram",
+    "subtitle": "Verbinde deinen Bot, um Benachrichtigungen auf Telegram zu erhalten.",
+    "save": "Einstellungen speichern",
+    "saveError": "Telegram-Einstellungen konnten nicht gespeichert werden.",
+    "saved": "Telegram-Einstellungen gespeichert",
+    "botToken": "Bot-Token",
+    "botTokenPlaceholder": "1234567890:AA...",
+    "botTokenHint": "Das Token wird im Backend aufbewahrt und niemals im Browser offengelegt.",
+    "chatId": "Chat-ID",
+    "chatIdPlaceholder": "-1001234567890 oder 123456789",
+    "username": "Bot-Benutzername (optional)",
+    "usernamePlaceholder": "@MeinBot",
+    "setup": {
+      "title": "So verbindest du deinen Bot",
+      "hint": "Benachrichtigungen an einen Telegram-Chat zu senden erfordert ein Bot-Token und deine Chat-ID.",
+      "howTo": "Schnelle Einrichtung:"
+    },
+    "step1": "Öffne Telegram und schreibe @BotFather, sende dann /newbot und folge den Anweisungen, um einen Bot zu erstellen.",
+    "step2": "Kopiere das Token, das BotFather dir gibt, in das Feld oben.",
+    "step3": "Schreibe deinem Bot einmal und nutze @userinfobot, um deine Chat-ID herauszufinden.",
+    "test": "Testnachricht senden",
+    "testSent": "Testnachricht erfolgreich gesendet!",
+    "testError": "Testnachricht konnte nicht gesendet werden. Überprüfe Token und Chat-ID.",
+    "statusConnected": "Verbunden",
+    "statusDisconnected": "Nicht konfiguriert"
+  },
+  "settings": {
+    "subtitle": "Verwalte deine Sicherheit, Benachrichtigungen, Tools und Integrationen.",
+    "open": "Öffnen",
+    "status": {
+      "on": "Aktiviert",
+      "off": "Deaktiviert"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import path from "node:path";
+import { realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
 import fs from "fs-extra";
@@ -13,13 +14,76 @@ import gradient from "gradient-string";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATE_DIR = path.join(__dirname, "..", "templates", "default");
 
+const LANGUAGE_CHOICES = [
+  { title: "العربية (Arabic) \u2014 the RTL default", value: "ar", selected: true },
+  { title: "Español (Spanish)", value: "es" },
+  { title: "Deutsch (German)", value: "de" },
+  { title: "Français (French)", value: "fr" },
+  { title: "Русский (Russian)", value: "ru" },
+  { title: "Italiano (Italian)", value: "it" },
+];
+
+const LOCALE_LABELS = {
+  en: "English",
+  ar: "العربية",
+  es: "Español",
+  de: "Deutsch",
+  fr: "Français",
+  ru: "Русский",
+  it: "Italiano",
+};
+
+const EXTRA_LOCALE_FILES = ["ar.json", "de.json", "es.json", "fr.json", "it.json", "ru.json"];
+
+function buildI18nModule(locales, defaultLocale) {
+  const ordered = ["ar", "en", "es", "de", "fr", "ru", "it"].filter((c) => locales.includes(c));
+  const lines = [];
+  lines.push('import { createI18n } from "vue-i18n";');
+  for (const code of ordered) {
+    lines.push(`import ${code} from "./locales/${code}.json";`);
+  }
+  lines.push("");
+  lines.push("export const SUPPORTED_LOCALES = [");
+  for (const code of ordered) {
+    lines.push(`  { code: "${code}", label: "${LOCALE_LABELS[code]}" },`);
+  }
+  lines.push("];");
+  lines.push("");
+  lines.push('const STORAGE_KEY = "falak_locale";');
+  lines.push("const stored = localStorage.getItem(STORAGE_KEY);");
+  lines.push(
+    `const savedLocale = SUPPORTED_LOCALES.some((l) => l.code === stored) ? stored : "${defaultLocale}";`
+  );
+  lines.push("");
+  lines.push("const i18n = createI18n({");
+  lines.push("  legacy: false,");
+  lines.push("  locale: savedLocale,");
+  lines.push('  fallbackLocale: "en",');
+  lines.push(`  messages: { ${ordered.join(", ")} },`);
+  lines.push("});");
+  lines.push("");
+  lines.push("export function setLocale(locale) {");
+  lines.push("  i18n.global.locale.value = locale;");
+  lines.push("  localStorage.setItem(STORAGE_KEY, locale);");
+  lines.push("  document.documentElement.lang = locale;");
+  lines.push('  document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";');
+  lines.push("}");
+  lines.push("");
+  lines.push("// Apply on load");
+  lines.push("setLocale(savedLocale);");
+  lines.push("");
+  lines.push("export default i18n;");
+  lines.push("");
+  return lines.join("\n");
+}
+
 const program = new Command();
 program
   .name("falak-app")
   .description("Scaffold a Vue 3 app with Ably, Brevo, AES-256 and a Laravel API client baked in.")
   .argument("[project-name]", "Directory to create the project in")
   .option("-y, --yes", "Skip prompts and use defaults (all services enabled)")
-  .option("--no-rtl", "Disable Arabic/RTL default (English/LTR) instead")
+  .option("--no-rtl", "Exclude Arabic/RTL (English or your chosen LTR languages only)")
   .parse(process.argv);
 
 const [argProjectName] = program.args;
@@ -48,7 +112,7 @@ async function printBanner() {
   const art = (await figlet("Falak Duo", { font: "ANSI Shadow" }).catch(() => null)) || "Falak Duo";
   console.log("\n" + gradient("#a78bfa", "#22d3ee", "#2dd4bf")(art));
   console.log(
-    chalk.gray("  Vue 3 boilerplate \u2014 Ably \u00b7 Brevo \u00b7 AES-256 \u00b7 Arabic/RTL")
+    chalk.gray("  Vue 3 boilerplate \u2014 Ably \u00b7 Brevo \u00b7 AES-256 \u00b7 Multilingual / RTL")
   );
   console.log("\n");
 }
@@ -60,8 +124,8 @@ async function main() {
     ? {
         projectName: argProjectName || "falak-app-duo",
         services: ["ably", "brevo"],
+        languages: ["ar"],
         apiBaseUrl: "http://localhost:8000/api",
-        rtl: opts.rtl,
       }
     : await prompts(
         [
@@ -82,26 +146,33 @@ async function main() {
             hint: "Space to toggle, Enter to confirm",
           },
           {
+            type: "multiselect",
+            name: "languages",
+            message: "Which languages should the app ship with? (English is always included)",
+            choices: LANGUAGE_CHOICES.map((c) =>
+              c.value === "ar" && !opts.rtl ? { ...c, selected: false } : c
+            ),
+            hint: "Space to toggle, Enter to confirm",
+          },
+          {
             type: "text",
             name: "apiBaseUrl",
             message: "Laravel API base URL:",
             initial: "http://localhost:8000/api",
           },
-          ...(opts.rtl
-            ? [
-                {
-                  type: "confirm",
-                  name: "rtl",
-                  message: "Enable Arabic / RTL by default?",
-                  initial: true,
-                },
-              ]
-            : []),
         ],
         { onCancel: () => process.exit(1) }
       );
 
-  const rtlEnabled = opts.yes ? answers.rtl : opts.rtl ? answers.rtl : false;
+  // The set of locales the app ships: English is always bundled, plus the
+  // languages the user picked. `--no-rtl` forces Arabic out (LTR only).
+  let locales = ["en", ...(answers.languages || [])];
+  locales = [...new Set(locales)];
+  if (!opts.rtl) {
+    locales = locales.filter((l) => l !== "ar");
+  }
+  const hasRtl = locales.includes("ar");
+  const defaultLocale = hasRtl ? "ar" : "en";
 
   const projectName = argProjectName || answers.projectName;
   const services = answers.services || [];
@@ -138,48 +209,38 @@ async function main() {
     }
   }
 
-  // RTL off: strip Arabic/RTL out of the copied app — English/LTR only.
-  // The template is RTL by default, so this must also remove the locale
-  // toggle and the Arabic bundle or the app would still "support RTL".
-  if (!rtlEnabled) {
-    const htmlPath = path.join(targetDir, "index.html");
-    const html = await fs.readFile(htmlPath, "utf-8");
-    await fs.writeFile(htmlPath, html.replace('<html lang="ar" dir="rtl">', '<html lang="en" dir="ltr">'));
+  // Wire i18n to exactly the selected languages: rewrite index.html lang/dir,
+  // regenerate src/i18n/index.js, and drop unselected locale bundles. The
+  // template ships Arabic+RTL by default; --no-rtl (or deselecting Arabic)
+  // yields an LTR-only app.
+  const htmlPath = path.join(targetDir, "index.html");
+  const html = await fs.readFile(htmlPath, "utf-8");
+  const htmlTag = hasRtl ? '<html lang="ar" dir="rtl">' : '<html lang="en" dir="ltr">';
+  await fs.writeFile(htmlPath, html.replace('<html lang="ar" dir="rtl">', htmlTag));
 
-    const i18nPath = path.join(targetDir, "src", "i18n", "index.js");
-    await fs.writeFile(
-      i18nPath,
-      [
-        'import { createI18n } from "vue-i18n";',
-        'import en from "./locales/en.json";',
-        "",
-        "export default createI18n({",
-        '  legacy: false,',
-        '  locale: "en",',
-        '  fallbackLocale: "en",',
-        "  messages: { en },",
-        "});",
-        "",
-      ].join("\n")
-    );
-    await fs.remove(path.join(targetDir, "src", "i18n", "locales", "ar.json"));
+  const i18nPath = path.join(targetDir, "src", "i18n", "index.js");
+  await fs.writeFile(i18nPath, buildI18nModule(locales, defaultLocale));
 
+  for (const file of EXTRA_LOCALE_FILES) {
+    if (!locales.includes(file.replace(".json", ""))) {
+      await fs.remove(path.join(targetDir, "src", "i18n", "locales", file));
+    }
+  }
+
+  // English-only app: strip the language switcher (and its setup) from App.vue.
+  if (locales.length === 1) {
     const appPath = path.join(targetDir, "src", "App.vue");
     let app = await fs.readFile(appPath, "utf-8");
-    app = app.replace('import { setLocale } from "@/i18n";\n', "");
+    app = app.replace('import { setLocale, SUPPORTED_LOCALES } from "@/i18n";\n', "");
     app = app.replace("const { t, locale } = useI18n();", "const { t } = useI18n();");
-    app = app.replace(
-      'function toggleLocale() {\n  setLocale(locale.value === "ar" ? "en" : "ar");\n}\n',
-      ""
-    );
-    app = app.replace(
-      /\n        <button @click="toggleLocale" class="text-sm px-2 py-1 border rounded">\n          \{\{ locale === "ar" \? "EN" : "AR" \}\}\n        <\/button>/,
-      ""
-    );
+    app = app.replace("const locales = SUPPORTED_LOCALES;\n", "");
+    app = app.replace(/\n\s*<select\s*v-if="locales\.length > 1"[\s\S]*?<\/select>/, "");
     await fs.writeFile(appPath, app);
-
-    console.log(chalk.gray("  RTL disabled \u2014 English/LTR only, no Arabic or AR/EN toggle."));
   }
+
+  console.log(
+    chalk.gray(`  Languages wired: ${locales.map((l) => LOCALE_LABELS[l]).join(", ")}${hasRtl ? " (RTL default)" : ""}`)
+  );
 
   // Generate a real .env from .env.example with a fresh encryption key
   const envExamplePath = path.join(targetDir, ".env.example");
@@ -235,7 +296,24 @@ async function main() {
   await runInProject(targetDir, "npm", ["run", "dev"]).catch(() => {});
 }
 
-main().catch((err) => {
-  console.error(chalk.red(err));
-  process.exit(1);
-});
+function isMain() {
+  const argv1 = process.argv[1];
+  if (!argv1) return false;
+  try {
+    // Resolve symlinks on both sides: npx/npm exec spawn the bin through the
+    // `node_modules/.bin/<name>` symlink, so a raw `argv[1] === import.meta.url`
+    // comparison would silently skip main() when run via npx.
+    return realpathSync(argv1) === fileURLToPath(import.meta.url);
+  } catch {
+    return false;
+  }
+}
+
+if (isMain()) {
+  main().catch((err) => {
+    console.error(chalk.red(err));
+    process.exit(1);
+  });
+}
+
+export { buildI18nModule };

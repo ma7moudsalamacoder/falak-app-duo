@@ -2,17 +2,340 @@
   "app": {
     "name": "Falak"
   },
+  "common": {
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "save": "Save",
+    "back": "Back",
+    "cancel": "Cancel",
+    "pleaseWait": "Please wait..."
+  },
   "nav": {
     "home": "Home",
-    "login": "Login"
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile",
+    "settings": "Settings",
+    "security": "Security",
+    "twoFactor": "2FA",
+    "notifications": "Notifications",
+    "aiAgent": "AI Agent",
+    "telegram": "Telegram"
   },
   "auth": {
-    "email": "Email",
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your account",
+      "submit": "Sign in"
+    },
+    "identifier": "Email or phone",
+    "identifierPlaceholder": "you@example.com or +201234567890",
+    "identifierHint": "We accept either your email address or your mobile number.",
     "password": "Password",
-    "submit": "Sign in",
-    "error": "Invalid credentials"
+    "passwordPlaceholder": "••••••••",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "phone": "Phone",
+    "phonePlaceholder": "+201234567890",
+    "tabEmail": "Email",
+    "tabPhone": "Phone",
+    "remember": "Remember me",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "forgotPassword": "Forgot password?",
+    "loginError": "Invalid credentials. Please check your email/phone and password.",
+    "socialError": "Social login failed. Please try again.",
+    "or": "or continue with",
+    "social": {
+      "google": "Gmail",
+      "facebook": "Facebook"
+    },
+    "noAccount": "Don't have an account?",
+    "registerLink": "Create one",
+    "brand": {
+      "badge": "Production-ready starter",
+      "headline1": "Everything you need,",
+      "headline2": "already wired.",
+      "tagline": "Realtime chat, transactional email, AES-256 secure auth and an AI agent — bundled in one Vue 3 + Laravel starter.",
+      "footer": "Vue 3 · Laravel · Ably · Brevo · Groq"
+    }
+  },
+  "register": {
+    "title": "Create your account",
+    "subtitle": "Join Falak in less than a minute",
+    "name": "Full name",
+    "namePlaceholder": "Your name",
+    "identifier": "Email or phone",
+    "identifierPlaceholder": "you@example.com or +201234567890",
+    "identifierHint": "Your login identifier. We accept either email or mobile.",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "phone": "Phone",
+    "phonePlaceholder": "+201234567890",
+    "phoneHint": "Optional — used for SMS notifications and as an alternate login identifier.",
+    "socialGoogle": "Sign up with Gmail",
+    "socialFacebook": "Sign up with Facebook",
+    "password": "Password",
+    "passwordPlaceholder": "At least 8 characters",
+    "confirm": "Confirm password",
+    "confirmPlaceholder": "Repeat your password",
+    "mismatch": "Passwords do not match.",
+    "error": "Registration failed. Please try again.",
+    "submit": "Create account",
+    "haveAccount": "Already have an account?",
+    "loginLink": "Sign in",
+    "strength": {
+      "0": "Too weak",
+      "1": "Weak",
+      "2": "Fair",
+      "3": "Good",
+      "4": "Strong"
+    }
+  },
+  "recover": {
+    "title": "Recover password",
+    "subtitle": "We'll send you a reset link",
+    "identifier": "Email or phone",
+    "identifierPlaceholder": "you@example.com or +201234567890",
+    "identifierHint": "Enter the email or phone linked to your account.",
+    "submit": "Send reset link",
+    "sentTitle": "Check your inbox",
+    "sent": "If an account exists with that identifier, a reset link has been sent to you.",
+    "error": "Something went wrong. Please try again.",
+    "backToLogin": "Back to login"
   },
   "home": {
-    "welcome": "Welcome to Falak"
+    "badge": "Vue 3 · Laravel · Ably · Brevo",
+    "title": "The Falak Stack",
+    "subtitle": "A production-ready starter with realtime chat, transactional email, AES-256 security and Arabic/RTL support out of the box.",
+    "ctaRegister": "Create account",
+    "ctaLogin": "Sign in",
+    "ctaProfile": "Go to profile",
+    "rotator": {
+      "1": "Realtime chat via Ably",
+      "2": "AES-256 secure auth",
+      "3": "Groq AI agent ready",
+      "4": "Arabic & RTL by default"
+    },
+    "stats": {
+      "1": "Starter users",
+      "2": "Uptime",
+      "3": "Services wired",
+      "4": "Support"
+    },
+    "cta": {
+      "title": "Ship your idea today",
+      "subtitle": "Copy the scaffold, fill in your API keys, and build on a stack that already works."
+    },
+    "features": {
+      "realtime": {
+        "title": "Realtime",
+        "desc": "Live updates and chat wired through Ably via Laravel Echo."
+      },
+      "brevo": {
+        "title": "Email & SMS",
+        "desc": "Transactional email and SMS flows wired through Brevo."
+      },
+      "security": {
+        "title": "AES-256",
+        "desc": "Tokens are encrypted at rest in the browser. API-key + bearer auth."
+      },
+      "agent": {
+        "title": "AI Agent",
+        "desc": "Groq-powered AI agent settings ready to configure."
+      }
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Manage your personal information and preferred contact channels.",
+    "save": "Save changes",
+    "saveError": "Failed to save your profile.",
+    "saved": "Profile updated",
+    "name": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "phonePlaceholder": "+201234567890",
+    "phoneHint": "Your phone number is used for SMS notifications and as an optional login identifier.",
+    "country": "Country",
+    "countryPlaceholder": "Select your country",
+    "city": "City",
+    "cityPlaceholder": "Select your city",
+    "countryFirst": "Choose a country first",
+    "location": {
+      "title": "Location",
+      "available": "cities available for this country",
+      "none": "No cities listed yet for this country."
+    },
+    "photo": {
+      "label": "Profile photo",
+      "hint": "JPG or PNG. Stored securely with your profile.",
+      "change": "Change photo"
+    },
+    "removePhoto": "Remove photo",
+    "channel": {
+      "title": "Communication channel",
+      "hint": "Choose an additional channel besides email for receiving updates.",
+      "none": "Email only",
+      "telegram": "Telegram",
+      "whatsapp": "WhatsApp",
+      "telegramHandle": "Telegram username",
+      "whatsappHandle": "WhatsApp number",
+      "telegramPlaceholder": "@yourusername",
+      "whatsappPlaceholder": "+201234567890"
+    }
+  },
+  "security": {
+    "title": "Security",
+    "subtitle": "Password and account protection.",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "mismatch": "New passwords do not match.",
+    "passwordError": "Could not change the password. Check your current password.",
+    "passwordChanged": "Password changed successfully.",
+    "changePassword": {
+      "title": "Change password",
+      "hint": "Use at least 8 characters with a mix of letters and numbers.",
+      "submit": "Update password"
+    },
+    "protection": {
+      "title": "Account protection",
+      "hint": "Extra layers that keep your account safe."
+    },
+    "twoFactor": {
+      "title": "Two-factor authentication",
+      "hint": "Add an extra layer of security to your account."
+    },
+    "configure": "Configure",
+    "sessions": {
+      "title": "Active sessions",
+      "hint": "Review devices where you are currently signed in.",
+      "current": "Current session",
+      "currentBadge": "This device",
+      "revoke": "Revoke"
+    },
+    "view": "View"
+  },
+  "twoFactor": {
+    "title": "Two-factor authentication",
+    "subtitle": "Protect your account with a one-time code.",
+    "status": "Status",
+    "on": "Enabled",
+    "off": "Disabled",
+    "method": "Verification method",
+    "methodApp": "Authenticator app",
+    "methodSms": "SMS",
+    "enable": "Enable 2FA",
+    "codePlaceholder": "6-digit code",
+    "confirm": "Verify & enable",
+    "disable": "Disable 2FA",
+    "disableHint": "Enter your code to disable two-factor authentication.",
+    "codesTitle": "Recovery codes",
+    "codesHint": "Store these somewhere safe — each code works once to sign in if you lose your device.",
+    "secretLabel": "Scratch code",
+    "secretHint": "Store this somewhere safe. You will need it to sign in if you lose your device.",
+    "pendingLabel": "A verification challenge was created. Enter the code.",
+    "enterCode": "Enter the 6-digit code to confirm.",
+    "enabled": "Two-factor authentication is now enabled.",
+    "disabled": "Two-factor authentication has been disabled.",
+    "error": "Something went wrong with 2FA."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "subtitle": "Choose how you want to receive updates.",
+    "category": "Category",
+    "save": "Save preferences",
+    "saveError": "Could not save notification preferences.",
+    "saved": "Preferences saved",
+    "channels": {
+      "email": "Email",
+      "push": "Push",
+      "sms": "SMS",
+      "telegram": "Telegram"
+    },
+    "desc": {
+      "email": "Email updates",
+      "push": "In-app push",
+      "sms": "Text message",
+      "telegram": "Telegram bot"
+    },
+    "categories": {
+      "account": "Account",
+      "security": "Security",
+      "marketing": "Marketing",
+      "updates": "Product updates"
+    },
+    "categoryDesc": {
+      "account": "Sign-in, profile and billing activity",
+      "security": "Password, 2FA and session alerts",
+      "marketing": "Promotions and offers",
+      "updates": "New features and releases"
+    }
+  },
+  "aiAgent": {
+    "title": "AI Agent",
+    "subtitle": "Configure your Groq-powered assistant.",
+    "save": "Save agent settings",
+    "saveError": "Could not save AI agent settings.",
+    "saved": "Agent settings saved",
+    "key": {
+      "title": "Get a free Groq API key",
+      "subtitle": "It takes about 2 minutes",
+      "steps": {
+        "1": "Go to console.groq.com and create a free account (or sign in).",
+        "2": "Open \"API Keys\" from the sidebar and click \"Create API Key\".",
+        "3": "Give it a name, press create, and copy the key that is shown once.",
+        "4": "Paste it in your backend .env as GROQ_API_KEY — the frontend never stores it."
+      },
+      "note": "Security note: the API key is kept server-side. The frontend only stores the agent behavior settings below."
+    },
+    "settings": {
+      "title": "Agent behavior",
+      "hint": "These settings shape how your assistant responds."
+    },
+    "model": "Model",
+    "temperature": "Creativity",
+    "temperatureLow": "Precise",
+    "temperatureHigh": "Creative",
+    "systemPrompt": "System prompt",
+    "systemPromptPlaceholder": "You are a helpful assistant for a Falak app user...",
+    "reasoning": "Enable reasoning"
+  },
+  "telegram": {
+    "title": "Telegram",
+    "subtitle": "Connect your bot to receive notifications on Telegram.",
+    "save": "Save settings",
+    "saveError": "Could not save Telegram settings.",
+    "saved": "Telegram settings saved",
+    "botToken": "Bot token",
+    "botTokenPlaceholder": "1234567890:AA...",
+    "botTokenHint": "The token is kept on the backend and never exposed to the browser.",
+    "chatId": "Chat ID",
+    "chatIdPlaceholder": "-1001234567890 or 123456789",
+    "username": "Bot username (optional)",
+    "usernamePlaceholder": "@MyBot",
+    "setup": {
+      "title": "How to get your bot connected",
+      "hint": "Sending notifications to a Telegram chat requires a bot token and your chat ID.",
+      "howTo": "Quick setup:"
+    },
+    "step1": "Open Telegram and message @BotFather, then send /newbot and follow the prompts to create a bot.",
+    "step2": "Copy the token BotFather gives you into the field above.",
+    "step3": "Message your bot once, then use @userinfobot to find your chat ID.",
+    "test": "Send test message",
+    "testSent": "Test message sent successfully!",
+    "testError": "Could not send a test message. Check the token and chat ID.",
+    "statusConnected": "Connected",
+    "statusDisconnected": "Not configured"
+  },
+  "settings": {
+    "subtitle": "Manage your security, notifications, tools and integrations.",
+    "open": "Open",
+    "status": {
+      "on": "Enabled",
+      "off": "Disabled"
+    }
   }
 }
