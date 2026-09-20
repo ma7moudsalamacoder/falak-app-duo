@@ -12,8 +12,11 @@ copying `templates/default/`. The repo is **not** a Vue app — the actual app
 
 - No lint, test, or typecheck scripts exist anywhere (root or template).
 - Run the CLI: `node bin/falak-app-duo <name> --yes` (interactive if no `--yes`).
-- `--no-rtl` (or answering the RTL prompt "no") rewrites the copied template's
-  `index.html` to `lang="en" dir="ltr"` and `src/i18n/index.js` default to `"en"`.
+- `--no-rtl` (or answering the RTL prompt "no") **strips RTL** from the copied
+  app: `index.html` → `lang="en" dir="ltr"`; `src/i18n/index.js` is rewritten
+  English-only (no `setLocale`/dir flipping); `locales/ar.json` is deleted; and
+  the AR/EN toggle + `locale`/`toggleLocale` are removed from `App.vue`. Keep
+  these exact strings stable or the replacements silently break.
 - After scaffolding the CLI prompts to auto-run `npm install` (and optionally
   `npm run dev`); `--yes` runs `npm install` automatically. Don't add install
   logic elsewhere.

@@ -138,19 +138,47 @@ async function main() {
     }
   }
 
-  // RTL off: flip the hard-coded Arabic/LTR defaults to English/LTR
+  // RTL off: strip Arabic/RTL out of the copied app — English/LTR only.
+  // The template is RTL by default, so this must also remove the locale
+  // toggle and the Arabic bundle or the app would still "support RTL".
   if (!rtlEnabled) {
     const htmlPath = path.join(targetDir, "index.html");
     const html = await fs.readFile(htmlPath, "utf-8");
     await fs.writeFile(htmlPath, html.replace('<html lang="ar" dir="rtl">', '<html lang="en" dir="ltr">'));
 
     const i18nPath = path.join(targetDir, "src", "i18n", "index.js");
-    const i18n = await fs.readFile(i18nPath, "utf-8");
     await fs.writeFile(
       i18nPath,
-      i18n.replace('getItem(STORAGE_KEY) || "ar"', 'getItem(STORAGE_KEY) || "en"')
+      [
+        'import { createI18n } from "vue-i18n";',
+        'import en from "./locales/en.json";',
+        "",
+        "export default createI18n({",
+        '  legacy: false,',
+        '  locale: "en",',
+        '  fallbackLocale: "en",',
+        "  messages: { en },",
+        "});",
+        "",
+      ].join("\n")
     );
-    console.log(chalk.gray("  RTL disabled \u2014 English (LTR) set as the default locale."));
+    await fs.remove(path.join(targetDir, "src", "i18n", "locales", "ar.json"));
+
+    const appPath = path.join(targetDir, "src", "App.vue");
+    let app = await fs.readFile(appPath, "utf-8");
+    app = app.replace('import { setLocale } from "@/i18n";\n', "");
+    app = app.replace("const { t, locale } = useI18n();", "const { t } = useI18n();");
+    app = app.replace(
+      'function toggleLocale() {\n  setLocale(locale.value === "ar" ? "en" : "ar");\n}\n',
+      ""
+    );
+    app = app.replace(
+      /\n        <button @click="toggleLocale" class="text-sm px-2 py-1 border rounded">\n          \{\{ locale === "ar" \? "EN" : "AR" \}\}\n        <\/button>/,
+      ""
+    );
+    await fs.writeFile(appPath, app);
+
+    console.log(chalk.gray("  RTL disabled \u2014 English/LTR only, no Arabic or AR/EN toggle."));
   }
 
   // Generate a real .env from .env.example with a fresh encryption key
