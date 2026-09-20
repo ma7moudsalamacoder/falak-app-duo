@@ -6,12 +6,17 @@ A Node ESM CLI (`bin/falak-app-duo`, name `falak-app`) that scaffolds a Vue 3 ap
 copying `templates/default/`. The repo is **not** a Vue app — the actual app
 (and its own `package.json` with Vue/Pinia/axios deps) lives entirely in
 `templates/default/`. Root `package.json` deps only cover the CLI
-(chalk, commander, fs-extra, prompts).
+(chalk, commander, fs-extra, prompts, figlet, gradient-string).
 
 ## Commands
 
 - No lint, test, or typecheck scripts exist anywhere (root or template).
 - Run the CLI: `node bin/falak-app-duo <name> --yes` (interactive if no `--yes`).
+- `--no-rtl` (or answering the RTL prompt "no") rewrites the copied template's
+  `index.html` to `lang="en" dir="ltr"` and `src/i18n/index.js` default to `"en"`.
+- After scaffolding the CLI prompts to auto-run `npm install` (and optionally
+  `npm run dev`); `--yes` runs `npm install` automatically. Don't add install
+  logic elsewhere.
 - Smoke-test by scaffolding into a temp dir, then
   `cd <name> && npm install && npm run build` inside the generated project.
 - Right package: root runs the scaffolder; `templates/default/` is the Vue app.
