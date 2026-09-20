@@ -14,7 +14,27 @@ integrations on the frontend side: **Ably** (realtime) and **Brevo**
 | Brevo (email/SMS) | Kept — calls go through Laravel, key never ships to the browser |
 | Laravel API auth | `X-API-Key` (app) + `Authorization: Bearer <token>` (user) |
 | AES-256 | Kept — encrypts the cached user token in localStorage |
-| Arabic/RTL | Kept — baked in via vue-i18n + postcss-rtlcss |
+| Arabic/RTL | Kept — baked in via vue-i18n + postcss-rtlcss (opt-out: `--no-rtl` or the RTL prompt) |
+
+## Install & run
+
+Published on npm under both `falak-app-duo` and the `@ma7moudsalama` org scope.
+No install needed — run it straight with `npx`:
+
+```bash
+npx falak-app-duo my-project          # interactive prompts
+npx falak-app-duo my-project --yes    # all defaults: Ably + Brevo, localhost API, RTL on
+npx falak-app-duo my-project --no-rtl # default locale becomes English/LTR
+```
+
+Or install the CLI globally once:
+
+```bash
+npm install -g falak-app-duo
+falak-app-duo my-project
+```
+
+The org-scoped equivalent is `npx @ma7moudsalama/falak-app-duo my-project`.
 
 ## Auth model
 
@@ -73,22 +93,20 @@ POST /api/brevo/email  | /api/brevo/sms | /api/brevo/contacts
 plus an `X-API-Key` middleware gating all of the above, and Sanctum (or
 similar) validating the bearer token for user-scoped routes.
 
-## Usage
+## What the CLI does
 
-```bash
-node bin/falak-app-duo my-project        # interactive prompts
-node bin/falak-app-duo my-project --yes  # defaults: Ably + Brevo, localhost API
-```
+1. Prints a gradient **Falak Duo** banner.
+2. In interactive mode asks which services to wire up (**Ably** and/or
+   **Brevo**), the Laravel API base URL, and whether to enable **Arabic/RTL**
+   by default. `--yes` takes all defaults; `--no-rtl` skips the RTL choice and
+   defaults to English/LTR.
+3. Copies `templates/default` into `my-project/`, strips the service files you
+   didn't select, and generates a real `.env` from `.env.example` with a fresh
+   random AES-256 key + IV and your chosen API base URL.
+4. Offers to run `npm install` and start the dev server for you (`--yes` runs
+   `npm install` automatically).
 
-Once published to npm you'd run it as `npx falak-app-duo my-project`.
-
-The CLI:
-1. Copies `templates/default` into `my-project/`.
-2. Strips out `ably.js` and/or `brevo.js` if you didn't select them.
-3. Generates a real `.env` from `.env.example` with a fresh random AES-256
-   key + IV, and your chosen API base URL.
-
-Then:
+To start a scaffolded project on your own:
 
 ```bash
 cd my-project
