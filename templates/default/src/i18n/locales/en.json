@@ -1,0 +1,18 @@
+{
+  "app": {
+    "name": "Falak"
+  },
+  "nav": {
+    "home": "Home",
+    "login": "Login"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "error": "Invalid credentials"
+  },
+  "home": {
+    "welcome": "Welcome to Falak"
+  }
+}
