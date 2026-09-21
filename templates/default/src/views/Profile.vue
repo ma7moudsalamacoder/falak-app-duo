@@ -19,10 +19,10 @@ const form = ref({
   country_code: "",
   city: "",
   channel: "none", // none | telegram | whatsapp
-  channel_handle: "",
   photo: null, // dataURL from the file picker
 });
 
+const loading = ref(true);
 const saved = ref(false);
 const saving = ref(false);
 const error = ref("");
@@ -85,7 +85,6 @@ async function save() {
       country_code: form.value.country_code,
       city: form.value.city,
       channel: form.value.channel,
-      channel_handle: form.value.channel_handle,
       photo: form.value.photo,
     });
     saved.value = true;
@@ -97,6 +96,7 @@ async function save() {
 }
 
 onMounted(async () => {
+  loading.value = true;
   try {
     await auth.fetchProfile();
   } catch {
@@ -111,8 +111,8 @@ onMounted(async () => {
   form.value.country_code = user.country_code || "";
   form.value.city = user.city || "";
   form.value.channel = user.channel || "none";
-  form.value.channel_handle = user.channel_handle || "";
   form.value.photo = user.photo || null;
+  loading.value = false;
 });
 </script>
 
@@ -136,7 +136,21 @@ onMounted(async () => {
     </div>
 
     <GlassCard spotlight class="p-6 sm:p-8 animate-fade-in-up motion-reduce:animate-none" style="animation-delay: 80ms">
-      <div class="flex flex-col gap-8">
+      <!-- Preloader: shown while the profile request is in flight -->
+      <div
+        v-if="loading"
+        class="flex flex-col items-center justify-center gap-4 py-24"
+        role="status"
+        aria-live="polite"
+      >
+        <span
+          class="h-10 w-10 animate-spin rounded-full border-2 border-edge2 border-t-emerald-400 motion-reduce:animate-none"
+          aria-hidden="true"
+        ></span>
+        <p class="text-sm text-mute">{{ t("common.loading") }}</p>
+      </div>
+
+      <div v-else class="flex flex-col gap-8">
         <!-- Photo -->
         <div class="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
           <div class="relative">
@@ -352,16 +366,6 @@ onMounted(async () => {
               </span>
             </button>
           </div>
-
-          <label v-if="form.channel === 'whatsapp'" class="mt-4 block animate-fade-in-up motion-reduce:animate-none">
-            <span class="field-label">{{ t("profile.channel.whatsappHandle") }}</span>
-            <input
-              v-model="form.channel_handle"
-              type="tel"
-              class="glass-input"
-              :placeholder="'+201234567890'"
-            />
-          </label>
         </div>
 
         <div>
