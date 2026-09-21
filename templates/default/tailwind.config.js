@@ -5,6 +5,53 @@ export default {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      colors: {
+        /* Semantic theme tokens (values flip with html.light in main.css).
+           `color` prefixed tokens (page/ink/mute) accept /opacity modifiers;
+           rgba tokens (glass/edge) bake their own alpha. */
+        page: "rgb(var(--c-page) / <alpha-value>)",
+        page2: "rgb(var(--c-page-2) / <alpha-value>)",
+        ink: "rgb(var(--c-ink) / <alpha-value>)",
+        ink2: "rgb(var(--c-ink-2) / <alpha-value>)",
+        ink3: "rgb(var(--c-ink-3) / <alpha-value>)",
+        mute: "rgb(var(--c-mute) / <alpha-value>)",
+        glass: "rgb(255 255 255 / var(--glass-a))",
+        glass2: "rgb(255 255 255 / var(--glass-a-2))",
+        glass3: "rgb(255 255 255 / var(--glass-a-3))",
+        edge: "var(--c-edge)",
+        edge2: "var(--c-edge-2)",
+        edge3: "var(--c-edge-3)",
+        /* Pale soft-accent shades read as glow on dark, so they're remapped
+           through tokens to darken for light mode. Other shades (400+) stay
+           on the default Tailwind palette. */
+        emerald: {
+          200: "rgb(var(--c-em-200) / <alpha-value>)",
+          300: "rgb(var(--c-em-300) / <alpha-value>)",
+        },
+        teal: {
+          200: "rgb(var(--c-teal-200) / <alpha-value>)",
+          300: "rgb(var(--c-teal-300) / <alpha-value>)",
+        },
+        cyan: {
+          200: "rgb(var(--c-cyan-200) / <alpha-value>)",
+          300: "rgb(var(--c-cyan-300) / <alpha-value>)",
+        },
+        sky: {
+          200: "rgb(var(--c-sky-200) / <alpha-value>)",
+        },
+        amber: {
+          200: "rgb(var(--c-amber-200) / <alpha-value>)",
+          300: "rgb(var(--c-amber-300) / <alpha-value>)",
+        },
+        orange: {
+          300: "rgb(var(--c-orange-300) / <alpha-value>)",
+        },
+        rose: {
+          200: "rgb(var(--c-rose-200) / <alpha-value>)",
+          300: "rgb(var(--c-rose-300) / <alpha-value>)",
+          400: "rgb(var(--c-rose-400) / <alpha-value>)",
+        },
+      },
       fontFamily: {
         arabic: ["'IBM Plex Sans Arabic'", "Almarai", "sans-serif"],
         sans: ["Almarai", "'IBM Plex Sans Arabic'", "sans-serif"],

@@ -45,8 +45,8 @@ async function submit() {
             </svg>
           </span>
           <div>
-            <p class="font-semibold text-white">{{ t("recover.sentTitle") }}</p>
-            <p class="mt-0.5 text-xs leading-relaxed text-emerald-100/80">{{ t("recover.sent") }}</p>
+            <p class="font-semibold text-ink">{{ t("recover.sentTitle") }}</p>
+            <p class="mt-0.5 text-xs leading-relaxed text-emerald-200">{{ t("recover.sent") }}</p>
           </div>
         </div>
         <div class="pointer-events-none absolute -end-6 -top-6 h-24 w-24 rounded-full bg-emerald-400/20 blur-2xl"></div>
@@ -102,7 +102,7 @@ async function submit() {
 
       <RouterLink
         to="/login"
-        class="mt-2 text-center text-sm text-gray-400 transition hover:text-gray-200"
+        class="mt-2 text-center text-sm text-mute transition hover:text-ink2"
       >
         {{ t("recover.backToLogin") }}
       </RouterLink>

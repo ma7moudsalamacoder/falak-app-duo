@@ -78,9 +78,9 @@ function open(section) {
   <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6">
     <div class="mb-8 animate-fade-in-up motion-reduce:animate-none">
       <div class="section-head">
-        <h1 class="text-2xl font-bold text-white">{{ t("nav.settings") }}</h1>
+        <h1 class="text-2xl font-bold text-ink">{{ t("nav.settings") }}</h1>
       </div>
-      <p class="mt-1 text-sm text-gray-400">{{ t("settings.subtitle") }}</p>
+      <p class="mt-1 text-sm text-mute">{{ t("settings.subtitle") }}</p>
     </div>
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -101,7 +101,7 @@ function open(section) {
           class="h-full p-5 transition duration-300 group-hover:-translate-y-0.5 group-hover:shadow-xl group-hover:shadow-emerald-950/30"
         >
           <div class="flex items-start justify-between gap-3">
-            <span class="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br ring-1 ring-white/10 transition duration-300 group-hover:scale-105" :class="s.tint">
+            <span class="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br ring-1 ring-edge transition duration-300 group-hover:scale-105" :class="s.tint">
               <svg v-if="s.key === 'security'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
                 <path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z" />
                 <path d="m9.5 12 1.8 1.8 3.2-3.6" />
@@ -122,19 +122,19 @@ function open(section) {
                 <path d="M21.9 4.6 18.9 19c-.2 1-.8 1.2-1.6.8l-4.5-3.3-2.2 2.1c-.2.2-.4.4-.9.4l.3-4.6L18.3 6c.4-.3-.1-.5-.6-.2L7.1 12.6l-4.4-1.4c-1-.3-1-1 .2-1.4L20.8 3.2c.8-.3 1.5.2 1.1 1.4Z" />
               </svg>
             </span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-1.5 h-4 w-4 text-gray-600 transition duration-300 group-hover:translate-x-0.5 group-hover:text-emerald-300 rtl:rotate-180">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-1.5 h-4 w-4 text-mute transition duration-300 group-hover:translate-x-0.5 group-hover:text-emerald-300 rtl:rotate-180">
               <path d="m9 6 6 6-6 6" />
             </svg>
           </div>
 
-          <h3 class="mt-4 text-base font-bold text-white">{{ s.title }}</h3>
-          <p class="mt-1 text-sm leading-relaxed text-gray-400">{{ s.subtitle }}</p>
+          <h3 class="mt-4 text-base font-bold text-ink">{{ s.title }}</h3>
+          <p class="mt-1 text-sm leading-relaxed text-mute">{{ s.subtitle }}</p>
 
           <div class="mt-4 flex items-center justify-between gap-3">
             <span
               v-if="s.status"
               class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
-              :class="s.on ? 'bg-emerald-500/15 text-emerald-300' : 'bg-white/5 text-gray-400'"
+              :class="s.on ? 'bg-emerald-500/15 text-emerald-300' : 'bg-glass text-mute'"
             >
               <span class="relative inline-flex h-1.5 w-1.5">
                 <span v-if="s.on" class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 animate-pulse-ring motion-reduce:hidden"></span>

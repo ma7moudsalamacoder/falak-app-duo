@@ -8,7 +8,7 @@ defineOptions({ name: "AppBackdrop" });
 <template>
   <div
     aria-hidden="true"
-    class="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#0b0f19]"
+    class="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-page"
   >
     <!-- Aurora mesh base -->
     <div
@@ -38,6 +38,6 @@ defineOptions({ name: "AppBackdrop" });
     ></div>
 
     <!-- Vignette so content keeps contrast -->
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(5,8,15,0.55))]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,var(--vignette))]"></div>
   </div>
 </template>

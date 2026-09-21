@@ -11,9 +11,7 @@ const auth = useAuthStore();
 const user = auth.user;
 
 const form = ref({
-  bot_token: user?.telegram?.bot_token ?? "",
   chat_id: user?.telegram?.chat_id ?? "",
-  username: user?.telegram?.username ?? "",
 });
 
 const saved = ref(false);
@@ -22,14 +20,14 @@ const testing = ref(false);
 const error = ref("");
 const testResult = ref("");
 
-const configured = computed(() => Boolean(form.value.bot_token && form.value.chat_id));
+const configured = computed(() => Boolean(form.value.chat_id));
 
 async function save() {
   saved.value = false;
   error.value = "";
   saving.value = true;
   try {
-    await auth.updateTelegram({ ...form.value });
+    await auth.updateTelegram({ chat_id: form.value.chat_id });
     saved.value = true;
   } catch (e) {
     error.value = t("telegram.saveError");
@@ -63,12 +61,12 @@ async function test() {
           </svg>
         </span>
         <div>
-          <h2 class="text-base font-semibold text-white">{{ t("telegram.setup.title") }}</h2>
-          <p class="text-xs text-gray-500">{{ t("telegram.setup.hint") }}</p>
+          <h2 class="text-base font-semibold text-ink">{{ t("telegram.setup.title") }}</h2>
+          <p class="text-xs text-mute">{{ t("telegram.setup.hint") }}</p>
         </div>
         <span
           class="ms-auto inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
-          :class="configured ? 'bg-emerald-500/15 text-emerald-300' : 'bg-white/5 text-gray-400'"
+          :class="configured ? 'bg-emerald-500/15 text-emerald-300' : 'bg-glass text-mute'"
         >
           <span class="relative inline-flex h-1.5 w-1.5">
             <span v-if="configured" class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 animate-pulse-ring motion-reduce:hidden"></span>
@@ -77,14 +75,14 @@ async function test() {
           {{ configured ? t("telegram.statusConnected") : t("telegram.statusDisconnected") }}
         </span>
       </div>
-      <div class="mt-4 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm text-gray-300">
-        <p class="flex items-center gap-2 font-medium text-gray-200">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-sky-300">
+      <div class="mt-4 rounded-xl border border-edge bg-glass p-4 text-sm text-ink2">
+        <p class="flex items-center gap-2 font-medium text-ink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-sky-400">
             <path d="M9 18h6M10 22h4M8 4h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
           </svg>
           {{ t("telegram.setup.howTo") }}
         </p>
-        <ol class="mt-3 flex list-inside list-decimal flex-col gap-2 pl-1 text-gray-400">
+        <ol class="mt-3 flex list-inside list-decimal flex-col gap-2 pl-1 text-mute">
           <li>{{ t("telegram.step1") }}</li>
           <li>{{ t("telegram.step2") }}</li>
           <li>{{ t("telegram.step3") }}</li>
@@ -95,36 +93,14 @@ async function test() {
     <GlassCard spotlight class="p-4 sm:p-6">
       <form @submit.prevent="save" class="flex flex-col gap-4">
         <label class="block">
-          <span class="field-label">{{ t("telegram.botToken") }}</span>
+          <span class="field-label">{{ t("telegram.chatId") }}</span>
           <input
-            v-model="form.bot_token"
-            type="password"
-            :placeholder="t('telegram.botTokenPlaceholder')"
+            v-model="form.chat_id"
+            type="text"
+            :placeholder="t('telegram.chatIdPlaceholder')"
             class="glass-input"
           />
-          <span class="field-hint">{{ t("telegram.botTokenHint") }}</span>
         </label>
-
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <label class="block">
-            <span class="field-label">{{ t("telegram.chatId") }}</span>
-            <input
-              v-model="form.chat_id"
-              type="text"
-              :placeholder="t('telegram.chatIdPlaceholder')"
-              class="glass-input"
-            />
-          </label>
-          <label class="block">
-            <span class="field-label">{{ t("telegram.username") }}</span>
-            <input
-              v-model="form.username"
-              type="text"
-              :placeholder="t('telegram.usernamePlaceholder')"
-              class="glass-input"
-            />
-          </label>
-        </div>
 
         <p v-if="error" class="rounded-lg border border-rose-400/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-300">{{ error }}</p>
         <p v-if="testResult" class="rounded-lg border border-emerald-300/20 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">{{ testResult }}</p>
@@ -140,7 +116,7 @@ async function test() {
             :disabled="testing || !configured"
             @click="test"
           >
-            <span v-if="testing" class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>
+            <span v-if="testing" class="h-4 w-4 animate-spin rounded-full border-2 border-ink/30 border-t-ink"></span>
             <span>{{ testing ? t("common.loading") : t("telegram.test") }}</span>
           </button>
           <Transition

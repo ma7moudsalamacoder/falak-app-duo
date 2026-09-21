@@ -19,7 +19,7 @@ function toggle() {
     :class="
       modelValue
         ? 'border-emerald-300/40 bg-gradient-to-r from-emerald-500 to-teal-500'
-        : 'border-white/15 bg-white/10'
+        : 'border-edge2 bg-glass'
     "
     @click="toggle"
   >

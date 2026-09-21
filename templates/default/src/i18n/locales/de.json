@@ -262,7 +262,23 @@
     "enterCode": "Gib den 6-stelligen Code zur Bestätigung ein.",
     "enabled": "Zwei-Faktor-Authentifizierung ist jetzt aktiviert.",
     "disabled": "Zwei-Faktor-Authentifizierung wurde deaktiviert.",
-    "error": "Bei der Zwei-Faktor-Authentifizierung ist etwas schiefgelaufen."
+    "error": "Bei der Zwei-Faktor-Authentifizierung ist etwas schiefgelaufen.",
+    "methodsTitle": "Aktive Verifikationsmethoden",
+    "default": "Standard",
+    "downloadCodes": "Herunterladen",
+    "qrLabel": "Scannen Sie diesen QR-Code mit Google Authenticator",
+    "channelNote": "Um Codes über Telegram oder WhatsApp zu erhalten, wählen Sie diesen Kommunikationskanal in Ihrem Profil.",
+    "methodRecovery": "Wiederherstellungscodes",
+    "methodEmail": "E-Mail",
+    "methodTelegram": "Telegram",
+    "methodWhatsapp": "WhatsApp",
+    "methodDesc": {
+      "recovery_codes": "10 Einmalcodes; laden Sie sie herunter und bewahren Sie sie sicher auf",
+      "email": "Ein einmaliger Code wird an Ihre E-Mail gesendet",
+      "authenticator": "Google Authenticator oder eine beliebige TOTP-App — QR-Code scannen",
+      "telegram": "Ein einmaliger Code wird Ihnen über Telegram gesendet",
+      "whatsapp": "Ein einmaliger Code wird Ihnen über WhatsApp gesendet"
+    }
   },
   "notifications": {
     "title": "Benachrichtigungen",
@@ -327,7 +343,7 @@
   },
   "telegram": {
     "title": "Telegram",
-    "subtitle": "Verbinde deinen Bot, um Benachrichtigungen auf Telegram zu erhalten.",
+    "subtitle": "Benachrichtigungen und Updates auf Telegram empfangen.",
     "save": "Einstellungen speichern",
     "saveError": "Telegram-Einstellungen konnten nicht gespeichert werden.",
     "saved": "Telegram-Einstellungen gespeichert",
@@ -339,16 +355,16 @@
     "username": "Bot-Benutzername (optional)",
     "usernamePlaceholder": "@MeinBot",
     "setup": {
-      "title": "So verbindest du deinen Bot",
-      "hint": "Benachrichtigungen an einen Telegram-Chat zu senden erfordert ein Bot-Token und deine Chat-ID.",
+      "title": "So findest du deine Chat-ID",
+      "hint": "Wir nutzen deine Chat-ID, um dir Updates und Benachrichtigungen direkt auf Telegram zu schicken.",
       "howTo": "Schnelle Einrichtung:"
     },
-    "step1": "Öffne Telegram und schreibe @BotFather, sende dann /newbot und folge den Anweisungen, um einen Bot zu erstellen.",
-    "step2": "Kopiere das Token, das BotFather dir gibt, in das Feld oben.",
-    "step3": "Schreibe deinem Bot einmal und nutze @userinfobot, um deine Chat-ID herauszufinden.",
+    "step1": "Öffne Telegram und sende eine Nachricht an @userinfobot (oder @RawDataBot)",
+    "step2": "Er antwortet sofort mit deiner persönlichen Chat-ID (einer Zahl)",
+    "step3": "Kopiere diese Zahl in das Feld Chat-ID unten",
     "test": "Testnachricht senden",
     "testSent": "Testnachricht erfolgreich gesendet!",
-    "testError": "Testnachricht konnte nicht gesendet werden. Überprüfe Token und Chat-ID.",
+    "testError": "Die Testnachricht konnte nicht gesendet werden. Prüfe deine Chat-ID.",
     "statusConnected": "Verbunden",
     "statusDisconnected": "Nicht konfiguriert"
   },
@@ -359,5 +375,9 @@
       "on": "Aktiviert",
       "off": "Deaktiviert"
     }
+  },
+  "theme": {
+    "light": "Heller Modus",
+    "dark": "Dunkler Modus"
   }
 }

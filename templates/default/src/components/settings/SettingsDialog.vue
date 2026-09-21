@@ -51,17 +51,17 @@ onBeforeUnmount(() => {
           aria-modal="true"
           :aria-label="title"
           tabindex="-1"
-          class="sd-panel relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl border border-white/10 bg-[#0b0f19]/95 shadow-2xl shadow-black/60 backdrop-blur-2xl sm:rounded-3xl"
+          class="sd-panel relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl border border-edge bg-page/95 shadow-2xl shadow-black/60 backdrop-blur-2xl sm:rounded-3xl"
           :class="wide ? 'sm:max-w-3xl' : 'sm:max-w-xl'"
         >
-          <div class="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4 sm:px-6">
+          <div class="flex items-start justify-between gap-4 border-b border-edge px-5 py-4 sm:px-6">
             <div>
-              <h2 class="text-lg font-bold text-white">{{ title }}</h2>
-              <p v-if="subtitle" class="mt-0.5 text-sm text-gray-400">{{ subtitle }}</p>
+              <h2 class="text-lg font-bold text-ink">{{ title }}</h2>
+              <p v-if="subtitle" class="mt-0.5 text-sm text-mute">{{ subtitle }}</p>
             </div>
             <button
               type="button"
-              class="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/5 text-gray-400 transition hover:bg-white/10 hover:text-white"
+              class="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-edge bg-glass text-mute transition hover:bg-glass3 hover:text-ink"
               :aria-label="t('common.cancel')"
               @click="close"
             >

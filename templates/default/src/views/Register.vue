@@ -86,7 +86,7 @@ async function social(provider) {
     <div class="grid gap-3">
       <button
         type="button"
-        class="flex items-center justify-center gap-2.5 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-gray-200 backdrop-blur transition-all duration-200 hover:border-emerald-300/40 hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+        class="flex items-center justify-center gap-2.5 rounded-xl border border-edge2 bg-glass px-4 py-2.5 text-sm font-semibold text-ink2 backdrop-blur transition-all duration-200 hover:border-emerald-300/40 hover:bg-glass3 hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
         :disabled="!!socialBusy"
         @click="social('google')"
       >
@@ -95,7 +95,7 @@ async function social(provider) {
       </button>
       <button
         type="button"
-        class="flex items-center justify-center gap-2.5 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-gray-200 backdrop-blur transition-all duration-200 hover:border-sky-300/40 hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+        class="flex items-center justify-center gap-2.5 rounded-xl border border-edge2 bg-glass px-4 py-2.5 text-sm font-semibold text-ink2 backdrop-blur transition-all duration-200 hover:border-sky-300/40 hover:bg-glass3 hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
         :disabled="!!socialBusy"
         @click="social('facebook')"
       >
@@ -105,9 +105,9 @@ async function social(provider) {
     </div>
 
     <div class="my-6 flex items-center gap-3">
-      <span class="h-px flex-1 bg-gradient-to-r from-transparent via-white/15 to-transparent"></span>
-      <span class="text-xs tracking-wide text-gray-500">{{ t("auth.or") }}</span>
-      <span class="h-px flex-1 bg-gradient-to-r from-transparent via-white/15 to-transparent"></span>
+      <span class="h-px flex-1 bg-gradient-to-r from-transparent via-edge2 to-transparent"></span>
+      <span class="text-xs tracking-wide text-mute">{{ t("auth.or") }}</span>
+      <span class="h-px flex-1 bg-gradient-to-r from-transparent via-edge2 to-transparent"></span>
     </div>
 
     <form @submit.prevent="submit" class="flex flex-col gap-4">
@@ -172,7 +172,7 @@ async function social(provider) {
             />
             <button
               type="button"
-              class="absolute end-3 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-gray-200"
+              class="absolute end-3 top-1/2 -translate-y-1/2 text-mute transition hover:text-ink2"
               :aria-label="showPassword ? t('auth.hidePassword') : t('auth.showPassword')"
               @click="showPassword = !showPassword"
             >
@@ -189,7 +189,7 @@ async function social(provider) {
           </div>
           <span v-if="password" class="mt-2 block">
             <span class="flex gap-1">
-              <span v-for="i in 4" :key="i" class="h-1 flex-1 rounded-full bg-white/10">
+              <span v-for="i in 4" :key="i" class="h-1 flex-1 rounded-full bg-glass3">
                 <span
                   class="block h-full rounded-full transition-all duration-300"
                   :style="{ width: i <= strength ? '100%' : '0%', background: strengthColor }"
@@ -237,7 +237,7 @@ async function social(provider) {
       </button>
     </form>
 
-    <p class="mt-6 text-center text-sm text-gray-400">
+    <p class="mt-6 text-center text-sm text-mute">
       {{ t("register.haveAccount") }}
       <RouterLink
         to="/login"

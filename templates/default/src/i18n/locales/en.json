@@ -262,7 +262,23 @@
     "enterCode": "Enter the 6-digit code to confirm.",
     "enabled": "Two-factor authentication is now enabled.",
     "disabled": "Two-factor authentication has been disabled.",
-    "error": "Something went wrong with 2FA."
+    "error": "Something went wrong with 2FA.",
+    "methodsTitle": "Active verification methods",
+    "default": "Default",
+    "downloadCodes": "Download",
+    "qrLabel": "Scan this QR code with Google Authenticator",
+    "channelNote": "To receive codes on Telegram or WhatsApp, select that communication channel in your profile.",
+    "methodRecovery": "Recovery codes",
+    "methodEmail": "Email",
+    "methodTelegram": "Telegram",
+    "methodWhatsapp": "WhatsApp",
+    "methodDesc": {
+      "recovery_codes": "10 one-time codes; download and store them somewhere safe",
+      "email": "A one-time code sent to your inbox",
+      "authenticator": "Google Authenticator or any TOTP app — scan the QR code",
+      "telegram": "A one-time code sent to you on Telegram",
+      "whatsapp": "A one-time code sent to you on WhatsApp"
+    }
   },
   "notifications": {
     "title": "Notifications",
@@ -327,7 +343,7 @@
   },
   "telegram": {
     "title": "Telegram",
-    "subtitle": "Connect your bot to receive notifications on Telegram.",
+    "subtitle": "Receive notifications and updates on Telegram.",
     "save": "Save settings",
     "saveError": "Could not save Telegram settings.",
     "saved": "Telegram settings saved",
@@ -339,16 +355,16 @@
     "username": "Bot username (optional)",
     "usernamePlaceholder": "@MyBot",
     "setup": {
-      "title": "How to get your bot connected",
-      "hint": "Sending notifications to a Telegram chat requires a bot token and your chat ID.",
+      "title": "How to get your chat ID",
+      "hint": "We'll use your chat ID to send you updates and notifications directly on Telegram.",
       "howTo": "Quick setup:"
     },
-    "step1": "Open Telegram and message @BotFather, then send /newbot and follow the prompts to create a bot.",
-    "step2": "Copy the token BotFather gives you into the field above.",
-    "step3": "Message your bot once, then use @userinfobot to find your chat ID.",
+    "step1": "Open Telegram and send a message to @userinfobot (or @RawDataBot)",
+    "step2": "It instantly replies with your personal chat ID (a number)",
+    "step3": "Copy that number into the Chat ID field below",
     "test": "Send test message",
     "testSent": "Test message sent successfully!",
-    "testError": "Could not send a test message. Check the token and chat ID.",
+    "testError": "Could not send a test message. Check your chat ID.",
     "statusConnected": "Connected",
     "statusDisconnected": "Not configured"
   },
@@ -359,5 +375,9 @@
       "on": "Enabled",
       "off": "Disabled"
     }
+  },
+  "theme": {
+    "light": "Light mode",
+    "dark": "Dark mode"
   }
 }

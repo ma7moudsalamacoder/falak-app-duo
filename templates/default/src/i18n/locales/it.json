@@ -247,7 +247,7 @@
     "on": "Attivata",
     "off": "Disattivata",
     "method": "Metodo di verifica",
-    "methodApp": "App autenticatore",
+    "methodApp": "App di autenticazione",
     "methodSms": "SMS",
     "enable": "Attiva 2FA",
     "codePlaceholder": "Codice a 6 cifre",
@@ -262,7 +262,23 @@
     "enterCode": "Inserisci il codice a 6 cifre per confermare.",
     "enabled": "L'autenticazione a due fattori è ora attivata.",
     "disabled": "L'autenticazione a due fattori è stata disattivata.",
-    "error": "Qualcosa è andato storto con la 2FA."
+    "error": "Qualcosa è andato storto con la 2FA.",
+    "methodsTitle": "Metodi di verifica attivi",
+    "default": "Predefinito",
+    "downloadCodes": "Scarica",
+    "qrLabel": "Scansiona questo codice QR con Google Authenticator",
+    "channelNote": "Per ricevere i codici via Telegram o WhatsApp, scegli quel canale di comunicazione nel tuo profilo.",
+    "methodRecovery": "Codici di recupero",
+    "methodEmail": "Email",
+    "methodTelegram": "Telegram",
+    "methodWhatsapp": "WhatsApp",
+    "methodDesc": {
+      "recovery_codes": "10 codici monouso; scaricali e conservali in un luogo sicuro",
+      "email": "Un codice monouso inviato alla tua email",
+      "authenticator": "Google Authenticator o qualsiasi app TOTP — scansiona il codice QR",
+      "telegram": "Un codice monouso inviato via Telegram",
+      "whatsapp": "Un codice monouso inviato via WhatsApp"
+    }
   },
   "notifications": {
     "title": "Notifiche",
@@ -327,7 +343,7 @@
   },
   "telegram": {
     "title": "Telegram",
-    "subtitle": "Collega il tuo bot per ricevere notifiche su Telegram.",
+    "subtitle": "Ricevi notifiche e aggiornamenti su Telegram.",
     "save": "Salva impostazioni",
     "saveError": "Impossibile salvare le impostazioni di Telegram.",
     "saved": "Impostazioni Telegram salvate",
@@ -339,16 +355,16 @@
     "username": "Nome utente del bot (facoltativo)",
     "usernamePlaceholder": "@MioBot",
     "setup": {
-      "title": "Come collegare il tuo bot",
-      "hint": "L'invio di notifiche a una chat Telegram richiede un token del bot e il tuo ID chat.",
+      "title": "Come ottenere il tuo chat ID",
+      "hint": "Useremo il tuo chat ID per inviarti aggiornamenti e notifiche direttamente su Telegram.",
       "howTo": "Configurazione rapida:"
     },
-    "step1": "Apri Telegram e scrivi a @BotFather, invia /newbot e segui le istruzioni per creare un bot.",
-    "step2": "Copia il token fornito da BotFather nel campo sopra.",
-    "step3": "Scrivi una volta al tuo bot, poi usa @userinfobot per trovare il tuo ID chat.",
+    "step1": "Apri Telegram e invia un messaggio a @userinfobot (o @RawDataBot)",
+    "step2": "Risponde subito con il tuo chat ID personale (un numero)",
+    "step3": "Copia quel numero nel campo Chat ID qui sotto",
     "test": "Invia messaggio di prova",
     "testSent": "Messaggio di prova inviato con successo!",
-    "testError": "Impossibile inviare il messaggio di prova. Controlla token e ID chat.",
+    "testError": "Impossibile inviare il messaggio di prova. Controlla il tuo chat ID.",
     "statusConnected": "Connesso",
     "statusDisconnected": "Non configurato"
   },
@@ -359,5 +375,9 @@
       "on": "Attivo",
       "off": "Disattivo"
     }
+  },
+  "theme": {
+    "light": "Modalità chiara",
+    "dark": "Modalità scura"
   }
 }

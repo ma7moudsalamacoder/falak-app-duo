@@ -1,9 +1,10 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter, RouterLink, RouterView } from "vue-router";
 import { setLocale, SUPPORTED_LOCALES } from "@/i18n";
 import { useAuthStore } from "@/stores/auth";
+import { getTheme, toggleTheme } from "@/theme";
 import AppBackdrop from "@/components/AppBackdrop.vue";
 
 const { t, locale } = useI18n();
@@ -11,6 +12,7 @@ const locales = SUPPORTED_LOCALES;
 const auth = useAuthStore();
 const route = useRoute();
 const router = useRouter();
+const theme = ref(getTheme());
 
 // Auth pages hide the app chrome and go full-screen.
 const authPageNames = ["login", "register", "forgot-password"];
@@ -34,7 +36,7 @@ async function logout() {
     <div class="relative z-10 flex min-h-screen flex-col">
       <header
         v-if="!isAuthPage"
-        class="sticky top-0 z-30 border-b border-white/10 bg-[#0b0f19]/70 backdrop-blur-xl"
+        class="sticky top-0 z-30 border-b border-edge bg-page/70 backdrop-blur-xl"
       >
         <nav class="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
           <RouterLink to="/" class="group flex items-center gap-2.5">
@@ -43,14 +45,14 @@ async function logout() {
             >
               F
             </span>
-            <span class="text-lg font-bold text-white">{{ t("app.name") }}</span>
+            <span class="text-lg font-bold text-ink">{{ t("app.name") }}</span>
           </RouterLink>
 
           <div class="flex flex-1 flex-wrap items-center justify-end gap-1.5 text-sm">
             <RouterLink
               to="/"
               class="rounded-full px-3 py-1.5 font-medium transition"
-              :class="route.name === 'home' ? 'bg-emerald-500/15 text-emerald-200 ring-1 ring-emerald-300/30' : 'text-gray-300 hover:bg-white/5 hover:text-white'"
+              :class="route.name === 'home' ? 'bg-emerald-500/15 text-emerald-200 ring-1 ring-emerald-300/30' : 'text-ink2 hover:bg-glass hover:text-ink'"
             >
               {{ t("nav.home") }}
             </RouterLink>
@@ -60,7 +62,7 @@ async function logout() {
                 :key="link.to"
                 :to="link.to"
                 class="rounded-full px-3 py-1.5 font-medium transition"
-                :class="route.path === link.to ? 'bg-emerald-500/15 text-emerald-200 ring-1 ring-emerald-300/30' : 'text-gray-300 hover:bg-white/5 hover:text-white'"
+                :class="route.path === link.to ? 'bg-emerald-500/15 text-emerald-200 ring-1 ring-emerald-300/30' : 'text-ink2 hover:bg-glass hover:text-ink'"
               >
                 {{ link.label }}
               </RouterLink>
@@ -68,6 +70,21 @@ async function logout() {
           </div>
 
           <div class="flex items-center gap-2.5">
+            <button
+              type="button"
+              :title="t(theme === 'light' ? 'theme.light' : 'theme.dark')"
+              :aria-label="t(theme === 'light' ? 'theme.light' : 'theme.dark')"
+              class="grid h-9 w-9 place-items-center rounded-full border border-edge2 bg-glass text-ink2 transition hover:bg-glass3 hover:text-ink"
+              @click="theme = toggleTheme()"
+            >
+              <svg v-if="theme === 'light'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4.5 w-4.5">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+              </svg>
+              <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4.5 w-4.5">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
+              </svg>
+            </button>
             <RouterLink
               v-if="!auth.userToken"
               to="/login"
@@ -82,7 +99,7 @@ async function logout() {
               v-if="locales.length > 1"
               :value="locale"
               @change="setLocale($event.target.value)"
-              class="rounded-full border border-white/15 bg-white/5 px-2.5 py-1.5 text-sm font-medium text-gray-300 outline-none transition hover:bg-white/10 hover:text-white"
+              class="rounded-full border border-edge2 bg-glass px-2.5 py-1.5 text-sm font-medium text-ink2 outline-none transition hover:bg-glass3 hover:text-ink"
             >
               <option v-for="l in locales" :key="l.code" :value="l.code">{{ l.label }}</option>
             </select>

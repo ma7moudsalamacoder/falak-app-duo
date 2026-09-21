@@ -23,7 +23,6 @@ const form = ref({
   model: user?.ai_agent?.model ?? "llama-3.3-70b-versatile",
   temperature: user?.ai_agent?.temperature ?? 0.7,
   reasoning: user?.ai_agent?.reasoning ?? false,
-  system_prompt: user?.ai_agent?.system_prompt ?? "",
 });
 
 const models = [
@@ -63,8 +62,8 @@ async function save() {
           AI
         </span>
         <div>
-          <h2 class="text-base font-semibold text-white">{{ t("aiAgent.key.title") }}</h2>
-          <p class="text-xs text-gray-500">{{ t("aiAgent.key.subtitle") }}</p>
+          <h2 class="text-base font-semibold text-ink">{{ t("aiAgent.key.title") }}</h2>
+          <p class="text-xs text-mute">{{ t("aiAgent.key.subtitle") }}</p>
         </div>
         <span class="ms-auto inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
           <span class="relative inline-flex h-1.5 w-1.5">
@@ -75,16 +74,16 @@ async function save() {
         </span>
       </div>
 
-      <ol class="mt-5 flex flex-col gap-3">
-        <li
+      <div class="mt-5 flex flex-col gap-3 rounded-xl border border-edge bg-glass p-4">
+        <div
           v-for="(step, i) in steps"
           :key="step.num"
-          class="group flex items-start gap-3.5 rounded-xl border border-white/10 bg-white/[0.03] p-4 transition hover:border-emerald-300/25 hover:bg-white/[0.05]"
+          class="flex items-start gap-3.5"
         >
           <span class="relative grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-emerald-500/20 to-teal-500/20 font-bold text-emerald-300 ring-1 ring-emerald-300/30">
             {{ step.num }}
           </span>
-          <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/5 text-gray-400 ring-1 ring-white/10 transition group-hover:text-emerald-300">
+          <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-glass text-mute ring-1 ring-edge">
             <svg v-if="step.icon === 'account'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
               <circle cx="12" cy="8" r="4" />
               <path d="M4 21a8 8 0 0 1 16 0" />
@@ -101,9 +100,9 @@ async function save() {
               <path d="M12 16v4M8 20h8" />
             </svg>
           </span>
-          <span class="flex-1 pt-0.5 text-sm leading-relaxed text-gray-300">{{ t(`aiAgent.key.steps.${step.num}`) }}</span>
-        </li>
-      </ol>
+          <span class="flex-1 pt-0.5 text-sm leading-relaxed text-ink2">{{ t(`aiAgent.key.steps.${step.num}`) }}</span>
+        </div>
+      </div>
 
       <div class="mt-4 flex items-start gap-2.5 rounded-xl border border-amber-300/20 bg-amber-500/10 p-3.5 text-xs leading-relaxed text-amber-200">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 h-4 w-4 shrink-0">
@@ -118,8 +117,8 @@ async function save() {
     <GlassCard spotlight class="p-4 sm:p-6">
       <div class="flex items-center justify-between gap-4">
         <div>
-          <h2 class="text-base font-semibold text-white">{{ t("aiAgent.settings.title") }}</h2>
-          <p class="mt-1 text-sm text-gray-400">{{ t("aiAgent.settings.hint") }}</p>
+          <h2 class="text-base font-semibold text-ink">{{ t("aiAgent.settings.title") }}</h2>
+          <p class="mt-1 text-sm text-mute">{{ t("aiAgent.settings.hint") }}</p>
         </div>
         <ToggleSwitch v-model="form.enabled" />
       </div>
@@ -133,15 +132,15 @@ async function save() {
               :key="m.id"
               type="button"
               class="flex items-center gap-3 rounded-xl border px-3.5 py-3 text-start transition"
-              :class="form.model === m.id ? 'border-emerald-300/50 bg-emerald-500/15 shadow-lg shadow-emerald-500/10' : 'border-white/10 bg-white/[0.03] hover:bg-white/[0.07]'"
+              :class="form.model === m.id ? 'border-emerald-300/50 bg-emerald-500/15 shadow-lg shadow-emerald-500/10' : 'border-edge bg-glass hover:bg-glass2'"
               @click="form.model = m.id"
             >
-              <span class="grid h-7 w-7 shrink-0 place-items-center rounded-lg text-[10px] font-black" :class="form.model === m.id ? 'bg-emerald-400/20 text-emerald-300' : 'bg-white/5 text-gray-500'">
+              <span class="grid h-7 w-7 shrink-0 place-items-center rounded-lg text-[10px] font-black" :class="form.model === m.id ? 'bg-emerald-400/20 text-emerald-300' : 'bg-glass text-mute'">
                 {{ m.tag.slice(0, 2) }}
               </span>
               <span class="min-w-0">
-                <span class="block truncate font-mono text-xs font-medium text-gray-200">{{ m.id }}</span>
-                <span class="mt-0.5 flex items-center gap-1 text-[10px] text-gray-500">
+                <span class="block truncate font-mono text-xs font-medium text-ink2">{{ m.id }}</span>
+                <span class="mt-0.5 flex items-center gap-1 text-[10px] text-mute">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3">
                     <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
                   </svg>
@@ -168,26 +167,16 @@ async function save() {
             step="0.1"
             class="mt-2 w-full accent-emerald-500"
           />
-          <div class="flex justify-between text-xs text-gray-500">
+          <div class="flex justify-between text-xs text-mute">
             <span>{{ t("aiAgent.temperatureLow") }}</span>
             <span>{{ t("aiAgent.temperatureHigh") }}</span>
           </div>
         </label>
 
-        <label class="block">
-          <span class="field-label">{{ t("aiAgent.systemPrompt") }}</span>
-          <textarea
-            v-model="form.system_prompt"
-            rows="4"
-            class="glass-input resize-y font-mono text-xs"
-            :placeholder="t('aiAgent.systemPromptPlaceholder')"
-          ></textarea>
-        </label>
-
-        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+        <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-edge bg-glass p-4">
           <ToggleSwitch v-model="form.reasoning" />
-          <span class="text-sm text-gray-300">{{ t("aiAgent.reasoning") }}</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ms-auto h-4 w-4 text-gray-500">
+          <span class="text-sm text-ink2">{{ t("aiAgent.reasoning") }}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ms-auto h-4 w-4 text-mute">
             <circle cx="12" cy="12" r="10" />
             <path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3" />
             <path d="M12 17h.01" />

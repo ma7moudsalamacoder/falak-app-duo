@@ -81,11 +81,11 @@ async function social(provider) {
 <template>
   <AuthLayout :title="t('auth.login.title')" :subtitle="t('auth.login.subtitle')">
     <!-- Email / phone toggle -->
-    <div class="mb-5 grid grid-cols-2 gap-1 rounded-xl border border-white/10 bg-white/5 p-1">
+    <div class="mb-5 grid grid-cols-2 gap-1 rounded-xl border border-edge bg-glass p-1">
       <button
         type="button"
         class="rounded-lg px-3 py-2 text-sm font-semibold transition"
-        :class="mode === 'email' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/20' : 'text-gray-400 hover:text-gray-200'"
+        :class="mode === 'email' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/20' : 'text-mute hover:text-ink2'"
         @click="mode = 'email'"
       >
         {{ t("auth.tabEmail") }}
@@ -93,7 +93,7 @@ async function social(provider) {
       <button
         type="button"
         class="rounded-lg px-3 py-2 text-sm font-semibold transition"
-        :class="mode === 'phone' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/20' : 'text-gray-400 hover:text-gray-200'"
+        :class="mode === 'phone' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/20' : 'text-mute hover:text-ink2'"
         @click="mode = 'phone'"
       >
         {{ t("auth.tabPhone") }}
@@ -104,7 +104,7 @@ async function social(provider) {
     <div class="grid gap-3">
       <button
         type="button"
-        class="relative isolate overflow-hidden group flex items-center justify-center gap-2.5 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-gray-200 backdrop-blur transition-all duration-200 hover:border-emerald-300/40 hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+        class="relative isolate overflow-hidden group flex items-center justify-center gap-2.5 rounded-xl border border-edge2 bg-glass px-4 py-2.5 text-sm font-semibold text-ink2 backdrop-blur transition-all duration-200 hover:border-emerald-300/40 hover:bg-glass3 hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
         :disabled="!!socialBusy"
         @click="social('google')"
       >
@@ -113,7 +113,7 @@ async function social(provider) {
       </button>
       <button
         type="button"
-        class="relative flex items-center justify-center gap-2.5 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-gray-200 backdrop-blur transition-all duration-200 hover:border-sky-300/40 hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+        class="relative flex items-center justify-center gap-2.5 rounded-xl border border-edge2 bg-glass px-4 py-2.5 text-sm font-semibold text-ink2 backdrop-blur transition-all duration-200 hover:border-sky-300/40 hover:bg-glass3 hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
         :disabled="!!socialBusy"
         @click="social('facebook')"
       >
@@ -123,20 +123,9 @@ async function social(provider) {
     </div>
 
     <div class="my-6 flex items-center gap-3">
-      <span class="h-px flex-1 bg-gradient-to-r from-transparent via-white/15 to-transparent"></span>
-      <span class="text-xs tracking-wide text-gray-500">{{ t("auth.or") }}</span>
-      <span class="h-px flex-1 bg-gradient-to-r from-transparent via-white/15 to-transparent"></span>
-    </div>
-
-    <!-- Demo-mode account hint -->
-    <div
-      v-if="isDemoMode && demoHint"
-      class="mb-5 rounded-xl border border-emerald-300/25 bg-emerald-500/10 px-4 py-3 text-sm"
-    >
-      <p class="font-medium text-emerald-200">{{ t("auth.demoHint") }}</p>
-      <code class="mt-1 block font-mono text-xs text-emerald-300">
-        {{ demoHint.email }} / {{ demoHint.password }}
-      </code>
+      <span class="h-px flex-1 bg-gradient-to-r from-transparent via-edge2 to-transparent"></span>
+      <span class="text-xs tracking-wide text-mute">{{ t("auth.or") }}</span>
+      <span class="h-px flex-1 bg-gradient-to-r from-transparent via-edge2 to-transparent"></span>
     </div>
 
     <form @submit.prevent="submit" class="flex flex-col gap-4">
@@ -146,7 +135,7 @@ async function social(provider) {
         </span>
         <div class="relative">
           <span
-            class="pointer-events-none absolute start-4 top-1/2 -translate-y-1/2 text-gray-500"
+            class="pointer-events-none absolute start-4 top-1/2 -translate-y-1/2 text-mute"
             aria-hidden="true"
           >
             <svg v-if="mode === 'email'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
@@ -184,7 +173,7 @@ async function social(provider) {
           />
           <button
             type="button"
-            class="absolute end-3 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-gray-200"
+            class="absolute end-3 top-1/2 -translate-y-1/2 text-mute transition hover:text-ink2"
             :aria-label="showPassword ? t('auth.hidePassword') : t('auth.showPassword')"
             @click="showPassword = !showPassword"
           >
@@ -202,10 +191,10 @@ async function social(provider) {
       </label>
 
       <div class="flex items-center justify-between gap-3 text-sm">
-        <label class="flex cursor-pointer items-center gap-2 text-gray-400">
+        <label class="flex cursor-pointer items-center gap-2 text-mute">
           <span class="relative">
             <input v-model="remember" type="checkbox" class="peer sr-only" />
-            <span class="grid h-5 w-5 place-items-center rounded-md border border-white/15 bg-white/5 transition peer-checked:border-emerald-400/60 peer-checked:bg-emerald-500/20">
+            <span class="grid h-5 w-5 place-items-center rounded-md border border-edge2 bg-glass transition peer-checked:border-emerald-400/60 peer-checked:bg-emerald-500/20">
               <svg v-if="remember" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3 text-emerald-300">
                 <path d="M20 6 9 17l-5-5" />
               </svg>
@@ -227,7 +216,7 @@ async function social(provider) {
 
       <button
         type="submit"
-        class="btn-ripple relative isolate rounded-xl px-4 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 before:absolute before:-inset-0.5 before:rounded-xl before:-z-10 before:bg-[conic-gradient(from_var(--tw-border-angle),#10B981,#2DD4BF,#F472B6,#F59E0B,#10B981)] before:[mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[mask-composite:exclude] before:animate-border-spin before:motion-reduce:animate-none bg-[#0d1520] shadow-xl shadow-emerald-500/10"
+        class="btn-ripple relative isolate rounded-xl px-4 py-3 text-sm font-bold text-ink transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 before:absolute before:-inset-0.5 before:rounded-xl before:-z-10 before:bg-[conic-gradient(from_var(--tw-border-angle),#10B981,#2DD4BF,#F472B6,#F59E0B,#10B981)] before:[mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[mask-composite:exclude] before:animate-border-spin before:motion-reduce:animate-none bg-page2 shadow-xl shadow-emerald-500/10"
         @click="spawnRipple"
         :disabled="loading"
       >
@@ -238,12 +227,12 @@ async function social(provider) {
           :style="{ left: r.x + 'px', top: r.y + 'px', width: r.size + 'px', height: r.size + 'px' }"
           @animationend="removeRipple(r.id)"
         ></span>
-        <span v-if="loading" class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>
+        <span v-if="loading" class="h-4 w-4 animate-spin rounded-full border-2 border-ink/30 border-t-ink"></span>
         <span>{{ loading ? t("common.pleaseWait") : t("auth.login.submit") }}</span>
       </button>
     </form>
 
-    <p class="mt-6 text-center text-sm text-gray-400">
+    <p class="mt-6 text-center text-sm text-mute">
       {{ t("auth.noAccount") }}
       <RouterLink
         to="/register"
@@ -252,5 +241,16 @@ async function social(provider) {
         {{ t("auth.registerLink") }}
       </RouterLink>
     </p>
+
+    <!-- Demo-mode account hint (bottom of the column, never in live mode) -->
+    <div
+      v-if="isDemoMode && demoHint"
+      class="mt-6 rounded-xl border border-emerald-300/25 bg-emerald-500/10 px-4 py-3 text-sm"
+    >
+      <p class="font-medium text-emerald-200">{{ t("auth.demoHint") }}</p>
+      <code class="mt-1 block font-mono text-xs text-emerald-300">
+        {{ demoHint.email }} / {{ demoHint.password }}
+      </code>
+    </div>
   </AuthLayout>
 </template>

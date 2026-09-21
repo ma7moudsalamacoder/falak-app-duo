@@ -4,6 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Falak App</title>
+    <script>
+      // FOUC guard: paint with the right theme before the app mounts.
+      // Mirrors src/theme.js.getTheme() — keep in sync.
+      (function () {
+        var s;
+        try {
+          s = localStorage.getItem("falak_theme");
+        } catch (e) {}
+        if (s === "light") {
+          document.documentElement.classList.add("light");
+        } else if (s !== "dark") {
+          try {
+            if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+              document.documentElement.classList.add("light");
+            }
+          } catch (e) {}
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="app"></div>

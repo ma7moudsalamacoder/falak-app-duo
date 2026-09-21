@@ -128,3 +128,32 @@ locale — everything else is LTR). `postcss-rtlcss` mirrors Tailwind utility
 classes when `dir="rtl"`. Test UI with RTL in mind. All 7 bundles
 (`ar`, `de`, `en`, `es`, `fr`, `ru`, `it`) must keep identical key structure —
 a new key in one JSON must exist in all of them.
+
+## Light / dark theming (do not break)
+
+- Dark is the default (`<html>` has no class); light is applied by toggling
+  `.light` on `<html>`. `src/theme.js` owns the logic (localStorage
+  `falak_theme`, else OS `prefers-color-scheme`, else dark) and the FOUC guard
+  duplicating it lives inline in `index.html <head>` — keep the two in sync.
+  The header toggle in `App.vue` is the only theme UI. `setLocale` must keep
+  using `classList`/`dir`, never rewriting `<html>` classes, so the theme class
+  survives a language switch.
+- **All colors go through semantic tokens** defined once in
+  `src/assets/main.css` (`:root` = dark, `html.light` = light) and wired into
+  `tailwind.config.js`: `page`/`page2` (backgrounds), `glass`/`glass2`/`glass3`
+  (translucent white fills at rising alpha), `edge`/`edge2`/`edge3` (borders),
+  `ink`/`ink2`/`ink3`/`mute` (text), plus `--grid-dot`/`--vignette`/`--ripple`/
+  `--scroll-thumb`. Never hardcode `text-white`, `text-gray-*`, `bg-white/*`,
+  `border-white/*`, `bg-[#0b0f19]`, `bg-[#0d1520]` in components — map to the
+  token instead. White stays only on saturated brand fills (`btn-primary`,
+  `btn-accent`, emerald/cyan gradients, the F/"AI" logo badges).
+- The pale soft-accent shades `emerald/teal/cyan/sky/amber/orange/rose`
+  `200`-`300` are **remapped through CSS vars** (glow on dark, deepened for
+  light) so `text-emerald-300`, `text-gradient`, role badges and status pills
+  adapt automatically. Shade `400`+ keeps the stock Tailwind palette. When
+  adding new pale accent text, reuse an existing remapped shade or add a token
+  to both `:root` and `html.light` and the matching `extend.colors` entry.
+- The scaffolder only rewrites the `<html lang dir>` opening tag in
+  `index.html`, so the inline theme script is safe; the English-only slice
+  regex still strips the language `<select>` from `App.vue` — keep that
+  `<select v-if="locales.length > 1">` block intact.

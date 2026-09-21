@@ -262,7 +262,23 @@
     "enterCode": "Saisissez le code à 6 chiffres pour confirmer.",
     "enabled": "L'authentification à deux facteurs est maintenant activée.",
     "disabled": "L'authentification à deux facteurs a été désactivée.",
-    "error": "Quelque chose s'est mal passé avec la 2FA."
+    "error": "Quelque chose s'est mal passé avec la 2FA.",
+    "methodsTitle": "Méthodes de vérification actives",
+    "default": "Par défaut",
+    "downloadCodes": "Télécharger",
+    "qrLabel": "Scannez ce code QR avec Google Authenticator",
+    "channelNote": "Pour recevoir des codes via Telegram ou WhatsApp, choisissez ce canal de communication dans votre profil.",
+    "methodRecovery": "Codes de récupération",
+    "methodEmail": "E-mail",
+    "methodTelegram": "Telegram",
+    "methodWhatsapp": "WhatsApp",
+    "methodDesc": {
+      "recovery_codes": "10 codes à usage unique ; téléchargez-les et conservez-les en lieu sûr",
+      "email": "Un code à usage unique envoyé à votre boîte mail",
+      "authenticator": "Google Authenticator ou toute app TOTP — scannez le code QR",
+      "telegram": "Un code à usage unique envoyé via Telegram",
+      "whatsapp": "Un code à usage unique envoyé via WhatsApp"
+    }
   },
   "notifications": {
     "title": "Notifications",
@@ -327,7 +343,7 @@
   },
   "telegram": {
     "title": "Telegram",
-    "subtitle": "Connectez votre bot pour recevoir les notifications sur Telegram.",
+    "subtitle": "Recevez les notifications et les mises à jour sur Telegram.",
     "save": "Enregistrer les paramètres",
     "saveError": "Impossible d'enregistrer les paramètres Telegram.",
     "saved": "Paramètres Telegram enregistrés",
@@ -339,16 +355,16 @@
     "username": "Nom d'utilisateur du bot (facultatif)",
     "usernamePlaceholder": "@MonBot",
     "setup": {
-      "title": "Comment connecter votre bot",
-      "hint": "L'envoi de notifications à un chat Telegram nécessite un jeton de bot et votre ID de chat.",
+      "title": "Comment récupérer votre chat ID",
+      "hint": "Nous utilisons votre chat ID pour vous envoyer des mises à jour et des notifications directement sur Telegram.",
       "howTo": "Configuration rapide :"
     },
-    "step1": "Ouvrez Telegram et écrivez à @BotFather, envoyez /newbot et suivez les instructions pour créer un bot.",
-    "step2": "Copiez le jeton fourni par BotFather dans le champ ci-dessus.",
-    "step3": "Écrivez une fois à votre bot, puis utilisez @userinfobot pour trouver votre ID de chat.",
+    "step1": "Ouvrez Telegram et envoyez un message à @userinfobot (ou @RawDataBot)",
+    "step2": "Il répond immédiatement avec votre chat ID personnel (un nombre)",
+    "step3": "Copiez ce nombre dans le champ Chat ID ci-dessous",
     "test": "Envoyer un message de test",
     "testSent": "Message de test envoyé avec succès !",
-    "testError": "Impossible d'envoyer le message de test. Vérifiez le jeton et l'ID du chat.",
+    "testError": "Impossible d'envoyer le message de test. Vérifiez votre chat ID.",
     "statusConnected": "Connecté",
     "statusDisconnected": "Non configuré"
   },
@@ -359,5 +375,9 @@
       "on": "Activé",
       "off": "Désactivé"
     }
+  },
+  "theme": {
+    "light": "Mode clair",
+    "dark": "Mode sombre"
   }
 }

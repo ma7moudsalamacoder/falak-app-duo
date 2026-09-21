@@ -180,10 +180,10 @@ function base32Secret() {
   return out.match(/.{4}/g).join(" ");
 }
 
-function recoveryCodes() {
+function recoveryCodes(count = 10) {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   const codes = new Set();
-  while (codes.size < 6) {
+  while (codes.size < count) {
     let code = "";
     for (let i = 0; i < 4; i++) code += chars[Math.floor(Math.random() * chars.length)];
     code += "-";
@@ -279,25 +279,35 @@ const demoApi = {
       }
       case "/auth/2fa/enable": {
         const account = requireAccount();
-        account.two_factor_method = String(body.method || "app");
+        const methods = Array.isArray(body.methods) && body.methods.length ? body.methods : ["recovery_codes", "email", "authenticator"];
+        account.two_factor_methods = methods;
         account.two_factor_secret = base32Secret();
         account.two_factor_challenge = true;
+        account.two_factor_recovery_codes = recoveryCodes();
         persist();
-        return { data: { secret: account.two_factor_secret, challenge: account.two_factor_challenge } };
+        return {
+          data: {
+            secret: account.two_factor_secret,
+            challenge: account.two_factor_challenge,
+            methods,
+            recoveryCodes: account.two_factor_recovery_codes,
+          },
+        };
       }
       case "/auth/2fa/verify": {
         const account = requireAccount();
         account.two_factor_enabled = true;
         account.two_factor_challenge = false;
-        account.two_factor_recovery_codes = recoveryCodes();
         persist();
         return { data: publicUser(account) };
       }
       case "/auth/2fa/disable": {
         const account = requireAccount();
         account.two_factor_enabled = false;
-        account.two_factor_secret = "";
         account.two_factor_challenge = false;
+        account.two_factor_secret = "";
+        account.two_factor_methods = [];
+        account.two_factor_recovery_codes = [];
         persist();
         return { data: publicUser(account) };
       }

@@ -13,10 +13,10 @@ const user = auth.user;
 
 const prefs = reactive(
   user?.notification_preferences || {
-    account: { email: true, push: true, sms: false, telegram: false },
-    security: { email: true, push: true, sms: true, telegram: false },
-    marketing: { email: false, push: false, sms: false, telegram: false },
-    updates: { email: true, push: false, sms: false, telegram: false },
+    account: { email: true, push: true, telegram: false },
+    security: { email: true, push: true, telegram: false },
+    marketing: { email: false, push: false, telegram: false },
+    updates: { email: true, push: false, telegram: false },
   }
 );
 
@@ -26,12 +26,11 @@ const categories = [
   { key: "marketing", icon: "megaphone" },
   { key: "updates", icon: "sparkles" },
 ];
-const channels = ["email", "push", "sms", "telegram"];
+const channels = ["email", "push", "telegram"];
 
 const channelExtra = {
   email: t("notifications.desc.email"),
   push: t("notifications.desc.push"),
-  sms: t("notifications.desc.sms"),
   telegram: t("notifications.desc.telegram"),
 };
 
@@ -56,14 +55,14 @@ async function save() {
 
 <template>
   <GlassCard spotlight class="p-4 sm:p-6">
-    <div class="flex flex-col divide-y divide-white/10">
+    <div class="flex flex-col divide-y divide-edge">
       <div
         v-for="(cat, ci) in categories"
         :key="cat.key"
         class="flex flex-col gap-4 py-5 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"
       >
         <div class="flex items-start gap-3">
-          <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-emerald-400/20 to-teal-500/20 text-emerald-200 ring-1 ring-white/10">
+          <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-emerald-400/20 to-teal-500/20 text-emerald-200 ring-1 ring-edge">
             <svg v-if="cat.icon === 'user'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
               <circle cx="12" cy="8" r="4" />
               <path d="M4 21a8 8 0 0 1 16 0" />
@@ -81,8 +80,8 @@ async function save() {
             </svg>
           </span>
           <div>
-            <p class="text-sm font-semibold text-white">{{ t(`notifications.categories.${cat.key}`) }}</p>
-            <p class="mt-0.5 text-xs text-gray-500">{{ t(`notifications.categoryDesc.${cat.key}`) }}</p>
+            <p class="text-sm font-semibold text-ink">{{ t(`notifications.categories.${cat.key}`) }}</p>
+            <p class="mt-0.5 text-xs text-mute">{{ t(`notifications.categoryDesc.${cat.key}`) }}</p>
           </div>
         </div>
 
@@ -96,7 +95,7 @@ async function save() {
             <ToggleSwitch v-model="prefs[cat.key][ch]" />
             <span
               class="text-xs font-medium transition"
-              :class="prefs[cat.key][ch] ? 'text-emerald-300' : 'text-gray-500 group-hover:text-gray-300'"
+              :class="prefs[cat.key][ch] ? 'text-emerald-300' : 'text-mute group-hover:text-ink2'"
             >
               {{ t(`notifications.channels.${ch}`) }}
             </span>

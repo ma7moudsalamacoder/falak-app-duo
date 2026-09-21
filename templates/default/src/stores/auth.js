@@ -96,8 +96,8 @@ export const useAuthStore = defineStore("auth", {
     },
 
     // ---- 2FA ----
-    async enable2FA(method) {
-      const { data } = await client.post("/auth/2fa/enable", { method });
+    async enable2FA(methods = []) {
+      const { data } = await client.post("/auth/2fa/enable", { methods });
       return data;
     },
     async verify2FA(code) {
