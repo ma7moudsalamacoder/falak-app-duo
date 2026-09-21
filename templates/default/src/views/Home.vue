@@ -4,6 +4,7 @@ import { useI18n } from "vue-i18n";
 import { RouterLink } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import GlassCard from "@/components/GlassCard.vue";
+import { isDemoMode, client } from "@/services/dataClient";
 
 const { t } = useI18n();
 const auth = useAuthStore();
@@ -23,6 +24,17 @@ const words = computed(() => [
 ]);
 
 const chips = computed(() => ["Vue 3", "Laravel", "Tailwind", "Ably", "Brevo", "Pinia", "vue-i18n", "Groq"]);
+
+// Demo mode: the hero stats are derived from the bundled demo data and a
+// live "demo data" section shows the entities the scaffold shipped.
+const demoOverview = ref(null);
+
+// 1 = starter users, 2 = uptime, 3 = services wired, 4 = support
+const stats = computed(() => {
+  if (!isDemoMode || !demoOverview.value) return ["12k+", "99.9%", "10", "24/7"];
+  const s = demoOverview.value.stats;
+  return [String(s.users), "99.9%", String(demoOverview.value.entities.length), "24/7"];
+});
 
 // Typewriter
 const typed = ref("");
@@ -51,8 +63,15 @@ function tick() {
     timeout = setTimeout(tick, 30);
   }
 }
-onMounted(() => {
+onMounted(async () => {
   timeout = setTimeout(tick, 700);
+  if (isDemoMode) {
+    try {
+      demoOverview.value = (await client.get("/overview")).data;
+    } catch {
+      // The demo backend is always available — nothing to do on failure.
+    }
+  }
 });
 onUnmounted(() => clearTimeout(timeout));
 </script>
@@ -118,10 +137,41 @@ onUnmounted(() => clearTimeout(timeout));
 
     <!-- Stats strip -->
     <div class="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-4">
-      <div v-for="(s, i) in ['12k+', '99.9%', '10', '24/7']" :key="i" class="animate-fade-in-up motion-reduce:animate-none">
+      <div v-for="(s, i) in stats" :key="i" class="animate-fade-in-up motion-reduce:animate-none">
         <GlassCard class="p-5 text-center glass-card-hover">
           <p class="text-2xl font-extrabold text-gradient">{{ s }}</p>
           <p class="mt-1 text-xs text-gray-500">{{ t(`home.stats.${i + 1}`) }}</p>
+        </GlassCard>
+      </div>
+    </div>
+
+    <!-- Demo data (only when the app runs in demo mode) -->
+    <div v-if="isDemoMode && demoOverview" class="mt-6 animate-fade-in-up motion-reduce:animate-none">
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 class="section-head flex items-center gap-2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-teal-300">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M3 9h18M8 4v5M16 4v5" />
+            </svg>
+            {{ t("home.demo.title") }}
+          </h2>
+          <p class="mt-1 text-sm text-gray-400">{{ t("home.demo.subtitle") }}</p>
+        </div>
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300 ring-1 ring-emerald-400/20">
+          {{ demoOverview.entities.length }} {{ t("home.demo.entities") }}
+        </span>
+      </div>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <GlassCard v-for="e in demoOverview.entities" :key="e.name" hover class="p-5">
+          <div class="flex items-center justify-between gap-3">
+            <span class="rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-1 font-mono text-xs font-semibold text-teal-200">
+              {{ e.name }}
+            </span>
+            <span class="text-lg font-extrabold text-white">{{ e.count }}</span>
+          </div>
+          <p v-if="e.preview" class="mt-3 truncate text-xs text-gray-500" :title="e.preview">{{ e.preview }}</p>
+          <p v-else class="mt-3 text-xs text-gray-600">—</p>
         </GlassCard>
       </div>
     </div>

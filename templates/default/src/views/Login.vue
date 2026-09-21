@@ -1,11 +1,12 @@
 <script setup>
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter, RouterLink } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import AuthLayout from "@/components/AuthLayout.vue";
 import SocialIcon from "@/components/SocialIcon.vue";
 import { useRipple } from "@/composables/useRipple";
+import { isDemoMode, client } from "@/services/dataClient";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -23,6 +24,19 @@ const loading = ref(false);
 const socialBusy = ref("");
 
 const { ripples, spawnRipple, removeRipple } = useRipple();
+
+// In demo mode, surface a ready-to-use account (from demoAccounts / demo data)
+// so the login flow can be exercised without a backend.
+const demoHint = ref(null);
+onMounted(async () => {
+  if (!isDemoMode) return;
+  try {
+    const { data } = await client.get("/overview");
+    demoHint.value = data.signInHint || null;
+  } catch {
+    demoHint.value = null;
+  }
+});
 
 const savedIdentifier = localStorage.getItem(REMEMBER_KEY) || "";
 if (savedIdentifier) {
@@ -112,6 +126,17 @@ async function social(provider) {
       <span class="h-px flex-1 bg-gradient-to-r from-transparent via-white/15 to-transparent"></span>
       <span class="text-xs tracking-wide text-gray-500">{{ t("auth.or") }}</span>
       <span class="h-px flex-1 bg-gradient-to-r from-transparent via-white/15 to-transparent"></span>
+    </div>
+
+    <!-- Demo-mode account hint -->
+    <div
+      v-if="isDemoMode && demoHint"
+      class="mb-5 rounded-xl border border-emerald-300/25 bg-emerald-500/10 px-4 py-3 text-sm"
+    >
+      <p class="font-medium text-emerald-200">{{ t("auth.demoHint") }}</p>
+      <code class="mt-1 block font-mono text-xs text-emerald-300">
+        {{ demoHint.email }} / {{ demoHint.password }}
+      </code>
     </div>
 
     <form @submit.prevent="submit" class="flex flex-col gap-4">

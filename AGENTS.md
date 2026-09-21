@@ -49,8 +49,9 @@ copying `templates/default/`. The repo is **not** a Vue app — the actual app
 - `bin/falak-app-duo` copies the template, rewrites the copied `package.json`
   `name`, deletes unselected service files, and generates `.env` from
   `.env.example` by substituting `__API_BASE_URL__`, `__AES_KEY__` (32-byte
-  hex), `__AES_IV__` (16-byte hex). Any new generated env var must follow this
-  placeholder → `.replace()` convention.
+  hex), `__AES_IV__` (16-byte hex), and `__DATA_MODE__` (`demo` when demo
+  accounts or demo data were selected, else `live`). Any new generated env var
+  must follow this placeholder → `.replace()` convention.
 - `src/services/ably.js` and `src/services/brevo.js` are **deleted** when a
   user deselects the service. Template code must only import them on demand
   (never statically at module load), or account for the deletion.
@@ -65,14 +66,28 @@ copying `templates/default/`. The repo is **not** a Vue app — the actual app
     `ROLES.length`; keep that contract.
   - `src/data/demoAccounts.js` is rewritten by `buildDemoAccountsModule()` to
     one account per picked role (or a single normal demo user when roles are
-    off) and **deleted** when dummy accounts aren't wanted. Nothing imports it
-    (static data only — no login buttons).
+    off) and **deleted** when dummy accounts aren't wanted. In demo mode
+    `src/services/demoApi.js` globs it (via `import.meta.glob` — safely absent)
+    and exposes each account as a login-able user.
   - `src/data/demo/*.js` are per-entity static modules; unselected entities
     are deleted and the whole `demo/` dir is removed when demo data is off.
-    Nothing imports them.
+    `demoApi.js` discovers them with `import.meta.glob`, so deleted/kept
+    module sets both build fine — never import a demo module by a fixed path.
   - Demo account data carries `profile` (name/phone/country/city/channel) plus
     `settings` (`notification_preferences`, `two_factor_enabled`, `ai_agent`,
     `telegram`) mirroring the settings dialogs' field shapes.
+- Data mode (`VITE_DATA_MODE`, set by the scaffolder): `demo` runs the whole
+  app on bundled demo data, `live` calls the Laravel API. `service/dataClient.js`
+  exports `client` (`demoApi` or `api`) plus `DATA_MODE`/`isDemoMode` — the
+  auth store and any page that fetches data must import `client` from
+  `@/services/dataClient`, never `api`/`demoApi` directly, so the switch stays
+  a one-var flip. The demo backend mirrors backend routes in-browser from a
+  localStorage DB (`falak_demo_db`, re-seeded when the seed fingerprint
+  changes): auth (login/register/me/logout/password), profile/settings writes
+  (notifications, AI agent, telegram, 2FA), `GET /overview` (Home stats + entity
+  previews), and generic entity CRUD (`/products`, `/orders`, …). Keep the
+  demo DB account shape compatible with what `Profile.vue` and the settings
+  dialogs read off `auth.user`.
 - Role labels are vue-i18n keys (`roles.*.title`) — a new role needs a key in
   ALL 7 bundles (see i18n section).
 - Keep `ably.js` wiring channel auth through the shared `api` axios client

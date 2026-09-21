@@ -73,7 +73,8 @@
       "headline2": "schon verbunden.",
       "tagline": "Echtzeit-Chat, transaktionale E-Mails, AES-256 sichere Anmeldung und ein KI-Agent — gebündelt in einem Vue-3- und Laravel-Starter.",
       "footer": "Vue 3 · Laravel · Ably · Brevo · Groq"
-    }
+    },
+    "demoHint": "Demo-Modus ist aktiv — versuche dieses Demo-Konto:"
   },
   "register": {
     "title": "Konto erstellen",
@@ -160,6 +161,11 @@
         "title": "KI-Agent",
         "desc": "Einstellungen für den Groq-KI-Agenten sind bereit zur Konfiguration."
       }
+    },
+    "demo": {
+      "title": "Demodaten",
+      "subtitle": "Wird aus src/data/demo/* gerendert — kein Backend nötig. Setze VITE_DATA_MODE=live, um stattdessen die API zu nutzen.",
+      "entities": "Entitäten"
     }
   },
   "profile": {

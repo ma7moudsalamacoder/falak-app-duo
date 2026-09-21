@@ -73,7 +73,8 @@
       "headline2": "already wired.",
       "tagline": "Realtime chat, transactional email, AES-256 secure auth and an AI agent — bundled in one Vue 3 + Laravel starter.",
       "footer": "Vue 3 · Laravel · Ably · Brevo · Groq"
-    }
+    },
+    "demoHint": "Demo mode is on — try this demo account:"
   },
   "register": {
     "title": "Create your account",
@@ -160,6 +161,11 @@
         "title": "AI Agent",
         "desc": "Groq-powered AI agent settings ready to configure."
       }
+    },
+    "demo": {
+      "title": "Demo data",
+      "subtitle": "Rendered from src/data/demo/* — no backend needed. Set VITE_DATA_MODE=live to hit the API instead.",
+      "entities": "Entities"
     }
   },
   "profile": {

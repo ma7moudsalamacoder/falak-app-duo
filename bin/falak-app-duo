@@ -540,6 +540,11 @@ async function main() {
       : "1 (normal demo user)"
     : "none";
 
+  // Data mode: demo apps are wired fully to the bundled demo data (auth +
+  // profile/settings + entity lists) and need no backend; everything else
+  // goes straight to the Laravel API.
+  const dataMode = demoAccounts || (demoEntities && demoEntities.length) ? "demo" : "live";
+
   console.log(
     chalk.gray(`  Languages wired: ${locales.map((l) => LOCALE_LABELS[l]).join(", ")}${hasRtl ? " (RTL default)" : ""}`)
   );
@@ -548,11 +553,13 @@ async function main() {
       `  Roles: ${roles && roles.length ? roles.join(", ") : "none"} | Demo accounts: ${demoAccountsSummary} | Demo data: ${demoEntities && demoEntities.length ? demoEntities.join(", ") : "none"}`
     )
   );
+  console.log(chalk.gray(`  Data mode: ${dataMode}${dataMode === "demo" ? " (no backend needed)" : " (Laravel API)"}`));
 
   // Generate a real .env from .env.example with a fresh encryption key
   const envExamplePath = path.join(targetDir, ".env.example");
   let envContent = await fs.readFile(envExamplePath, "utf-8");
   envContent = envContent
+    .replace("__DATA_MODE__", dataMode)
     .replace("__API_BASE_URL__", answers.apiBaseUrl || "http://localhost:8000/api")
     .replace("__AES_KEY__", randomHex(32)) // 256-bit key, hex-encoded
     .replace("__AES_IV__", randomHex(16)); // 128-bit IV, hex-encoded
@@ -561,9 +568,15 @@ async function main() {
   console.log(chalk.green(`\n  Scaffolded ./${projectName} successfully.\n`));
   console.log(
     chalk.gray(
-      "  Fill in VITE_API_KEY, VITE_ABLY_PUBLIC_KEY, Brevo backend routes, and review .env before shipping.\n"
+      "  Fill in VITE_API_KEY, VITE_ABLY_PUBLIC_KEY, Brevo backend routes, and review .env before shipping."
     )
   );
+  if (dataMode === "demo") {
+    console.log(chalk.gray("  Data mode: demo — the app runs on bundled demo data (no API keys needed)."));
+    console.log(chalk.gray("  Flip VITE_DATA_MODE=live in .env to wire the app to your Laravel backend.\n"));
+  } else {
+    console.log(chalk.gray("\n  Data mode: live — the app calls your Laravel backend.\n"));
+  }
 
   const runChoice = opts.yes || hasFeatureFlags
     ? "install"

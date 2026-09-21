@@ -73,7 +73,8 @@
       "headline2": "già collegato.",
       "tagline": "Chat in tempo reale, email transazionali, autenticazione sicura AES-256 e un agente IA — in un unico starter Vue 3 + Laravel.",
       "footer": "Vue 3 · Laravel · Ably · Brevo · Groq"
-    }
+    },
+    "demoHint": "Modalità demo attiva — prova questo account demo:"
   },
   "register": {
     "title": "Crea il tuo account",
@@ -160,6 +161,11 @@
         "title": "Agente IA",
         "desc": "Impostazioni dell'agente IA basato su Groq pronte da configurare."
       }
+    },
+    "demo": {
+      "title": "Dati demo",
+      "subtitle": "Renderizzato da src/data/demo/* — nessun backend richiesto. Imposta VITE_DATA_MODE=live per usare invece l'API.",
+      "entities": "Entità"
     }
   },
   "profile": {
