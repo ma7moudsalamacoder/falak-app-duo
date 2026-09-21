@@ -1,11 +1,15 @@
 // Light/dark theme. Dark is the default (no class); light adds `.light` on
-// <html> (tokens in assets/main.css flip). Choice persists in localStorage;
-// before any stored choice we follow the OS preference. The tiny duplicated
-// logic in index.html <head> runs first to avoid a flash of the wrong theme.
+// <html> (tokens in assets/main.css flip). The choice persists in IndexedDB
+// (src/storage.js); before any stored choice we follow the OS preference.
+// main.js awaits storage.ready() before initTheme(), so getSync() sees the
+// persisted value; index.html keeps the page hidden until then to avoid a flash
+// of the wrong theme.
+import storage from "@/storage";
+
 const KEY = "falak_theme";
 
 export function getTheme() {
-  const stored = localStorage.getItem(KEY);
+  const stored = storage.getSync(KEY);
   if (stored === "light" || stored === "dark") return stored;
   if (window.matchMedia?.("(prefers-color-scheme: light)").matches) return "light";
   return "dark";
@@ -20,7 +24,7 @@ export function initTheme() {
 }
 
 export function setTheme(theme) {
-  localStorage.setItem(KEY, theme);
+  storage.set(KEY, theme);
   applyTheme(theme);
 }
 

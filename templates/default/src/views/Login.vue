@@ -7,6 +7,7 @@ import AuthLayout from "@/components/AuthLayout.vue";
 import SocialIcon from "@/components/SocialIcon.vue";
 import { useRipple } from "@/composables/useRipple";
 import { isDemoMode, client } from "@/services/dataClient";
+import storage from "@/storage";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -38,7 +39,7 @@ onMounted(async () => {
   }
 });
 
-const savedIdentifier = localStorage.getItem(REMEMBER_KEY) || "";
+const savedIdentifier = storage.getSync(REMEMBER_KEY, "") || "";
 if (savedIdentifier) {
   identifier.value = savedIdentifier;
   remember.value = true;
@@ -46,8 +47,8 @@ if (savedIdentifier) {
 }
 
 watch(remember, (on) => {
-  if (on) localStorage.setItem(REMEMBER_KEY, identifier.value);
-  else localStorage.removeItem(REMEMBER_KEY);
+  if (on) storage.set(REMEMBER_KEY, identifier.value);
+  else storage.remove(REMEMBER_KEY);
 });
 
 async function submit() {
@@ -55,8 +56,8 @@ async function submit() {
   loading.value = true;
   try {
     await auth.login(identifier.value, password.value);
-    if (remember.value) localStorage.setItem(REMEMBER_KEY, identifier.value);
-    else localStorage.removeItem(REMEMBER_KEY);
+    if (remember.value) storage.set(REMEMBER_KEY, identifier.value);
+    else storage.remove(REMEMBER_KEY);
     router.push({ name: "home" });
   } catch (e) {
     error.value = t("auth.loginError");

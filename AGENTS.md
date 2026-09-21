@@ -81,8 +81,8 @@ copying `templates/default/`. The repo is **not** a Vue app — the actual app
   exports `client` (`demoApi` or `api`) plus `DATA_MODE`/`isDemoMode` — the
   auth store and any page that fetches data must import `client` from
   `@/services/dataClient`, never `api`/`demoApi` directly, so the switch stays
-  a one-var flip. The demo backend mirrors backend routes in-browser from a
-  localStorage DB (`falak_demo_db`, re-seeded when the seed fingerprint
+  a one-var flip. The demo backend mirrors backend routes in-browser from an
+  IndexedDB DB (`falak_demo_db`, re-seeded when the seed fingerprint
   changes): auth (login/register/me/logout/password), profile/settings writes
   (notifications, AI agent, telegram, 2FA), `GET /overview` (Home stats + entity
   previews), and generic entity CRUD (`/products`, `/orders`, …). Keep the
@@ -106,11 +106,15 @@ copying `templates/default/`. The repo is **not** a Vue app — the actual app
 
 - Every request from `src/services/api.js` sends `X-API-Key` (app) +
   `Authorization: Bearer <user token>` (user).
-- `api.js` reads the token straight from `localStorage` key `falak_user_token`
-  to avoid a circular import with `src/stores/auth.js`. Preserve this.
+- All client-side persistence goes through `src/storage.js` (IndexedDB via
+  `idb`); **nothing uses localStorage/sessionStorage**. `storage.ready()` must
+  be awaited in `main.js` before mount — it hydrates an in-memory mirror that
+  `storage.getSync()` reads synchronously. `api.js` reads the token from that
+  mirror (key `falak_user_token`) to avoid a circular import with
+  `src/stores/auth.js`; the auth store writes it via `storage.set/remove`.
 - User token is cached AES-256-CBC (CryptoJS) encrypted using
   `VITE_AES_KEY`/`VITE_AES_IV`; `src/utils/crypto.js` refuses to encrypt when
-  they're unset. Never add a plaintext localStorage secret.
+  they're unset. Never persist a plaintext secret.
 
 ## Removed integrations — do NOT reintroduce
 
@@ -120,11 +124,14 @@ never ships to the browser; client code only calls your own `/brevo/*` routes.
 
 ## i18n / RTL
 
-Arabic is the default locale (`ar`) when it ships, set on load in
-`src/i18n/index.js`; the generated module exports `SUPPORTED_LOCALES` (the
-drop-down choices in `App.vue`) and `setLocale` flips
-`document.documentElement.dir` between `rtl`/`ltr` (`"ar"` is the only RTL
-locale — everything else is LTR). `postcss-rtlcss` mirrors Tailwind utility
+Arabic is the default locale (`ar`) when it ships. The generated
+`src/i18n/index.js` exports `SUPPORTED_LOCALES` (the drop-down choices in
+`App.vue`), a synchronous `setLocale` (flips `document.documentElement.dir`
+between `rtl`/`ltr` — `"ar"` is the only RTL locale, everything else is LTR)
+and an async `initLocale()` that `main.js` awaits before mounting to apply the
+persisted locale from `src/storage.js`. Keep the `setLocale`/`SUPPORTED_LOCALES`
+import and `const locales = SUPPORTED_LOCALES;` lines in `App.vue` intact — the
+English-only slice matches them. `postcss-rtlcss` mirrors Tailwind utility
 classes when `dir="rtl"`. Test UI with RTL in mind. All 7 bundles
 (`ar`, `de`, `en`, `es`, `fr`, `ru`, `it`) must keep identical key structure —
 a new key in one JSON must exist in all of them.
@@ -132,12 +139,14 @@ a new key in one JSON must exist in all of them.
 ## Light / dark theming (do not break)
 
 - Dark is the default (`<html>` has no class); light is applied by toggling
-  `.light` on `<html>`. `src/theme.js` owns the logic (localStorage
-  `falak_theme`, else OS `prefers-color-scheme`, else dark) and the FOUC guard
-  duplicating it lives inline in `index.html <head>` — keep the two in sync.
-  The header toggle in `App.vue` is the only theme UI. `setLocale` must keep
-  using `classList`/`dir`, never rewriting `<html>` classes, so the theme class
-  survives a language switch.
+  `.light` on `<html>`. `src/theme.js` owns the logic (IndexedDB
+  `falak_theme` via `src/storage.js`, else OS `prefers-color-scheme`, else
+  dark). `main.js` awaits `storage.ready()` then calls `initTheme()` before
+  mounting; `index.html` sets `html.theme-loading` (hides the page) until then
+  so the first paint is never the wrong theme — keep that guard and the
+  `visibility: hidden` rule in sync. The header toggle in `App.vue` is the only
+  theme UI. `setLocale` must keep using `classList`/`dir`, never rewriting
+  `<html>` classes, so the theme class survives a language switch.
 - **All colors go through semantic tokens** defined once in
   `src/assets/main.css` (`:root` = dark, `html.light` = light) and wired into
   `tailwind.config.js`: `page`/`page2` (backgrounds), `glass`/`glass2`/`glass3`

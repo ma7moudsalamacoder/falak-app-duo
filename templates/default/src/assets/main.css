@@ -5,8 +5,8 @@
 /* ============================================================
    Theme tokens
    Dark is the default (no class on <html>); light is applied by
-   toggling `.light` on <html> (see src/theme.js + the FOUC guard
-   in index.html). Components use ONLY these semantic tokens — never
+   toggling `.light` on <html> (see src/theme.js + the `theme-loading`
+   guard in index.html). Components use ONLY these semantic tokens — never
    hardcoded dark-palette utilities — so a single var flip re-themes
    the whole app. Keep `html { }` (dark) and `html.light { }` in sync.
    ============================================================ */

@@ -215,6 +215,7 @@ function buildI18nModule(locales, defaultLocale) {
   const ordered = ["ar", "en", "es", "de", "fr", "ru", "it"].filter((c) => locales.includes(c));
   const lines = [];
   lines.push('import { createI18n } from "vue-i18n";');
+  lines.push('import storage from "@/storage";');
   for (const code of ordered) {
     lines.push(`import ${code} from "./locales/${code}.json";`);
   }
@@ -226,27 +227,30 @@ function buildI18nModule(locales, defaultLocale) {
   lines.push("];");
   lines.push("");
   lines.push('const STORAGE_KEY = "falak_locale";');
-  lines.push("const stored = localStorage.getItem(STORAGE_KEY);");
-  lines.push(
-    `const savedLocale = SUPPORTED_LOCALES.some((l) => l.code === stored) ? stored : "${defaultLocale}";`
-  );
   lines.push("");
   lines.push("const i18n = createI18n({");
   lines.push("  legacy: false,");
-  lines.push("  locale: savedLocale,");
+  lines.push(`  locale: "${defaultLocale}",`);
   lines.push('  fallbackLocale: "en",');
   lines.push(`  messages: { ${ordered.join(", ")} },`);
   lines.push("});");
   lines.push("");
   lines.push("export function setLocale(locale) {");
   lines.push("  i18n.global.locale.value = locale;");
-  lines.push("  localStorage.setItem(STORAGE_KEY, locale);");
+  lines.push("  storage.set(STORAGE_KEY, locale);");
   lines.push("  document.documentElement.lang = locale;");
   lines.push('  document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";');
   lines.push("}");
   lines.push("");
-  lines.push("// Apply on load");
-  lines.push("setLocale(savedLocale);");
+  lines.push("// Apply the persisted locale (falling back to the default) once storage is");
+  lines.push("// ready. main.js awaits this before mounting so the first paint is correct.");
+  lines.push("export async function initLocale() {");
+  lines.push("  const stored = await storage.get(STORAGE_KEY);");
+  lines.push(
+    `  const saved = SUPPORTED_LOCALES.some((l) => l.code === stored) ? stored : "${defaultLocale}";`
+  );
+  lines.push("  setLocale(saved);");
+  lines.push("}");
   lines.push("");
   lines.push("export default i18n;");
   lines.push("");

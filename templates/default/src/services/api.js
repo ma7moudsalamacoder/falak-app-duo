@@ -1,5 +1,6 @@
 import axios from "axios";
 import { decrypt } from "@/utils/crypto";
+import storage from "@/storage";
 
 /**
  * Central client for talking to the Laravel backend.
@@ -21,9 +22,10 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  // Read the token straight from storage (not the Pinia store) to avoid a
-  // circular import between this file and stores/auth.js.
-  const raw = localStorage.getItem("falak_user_token");
+  // Read the token from the in-memory mirror of the IndexedDB store (hydrated
+  // at boot) rather than the Pinia store, to avoid a circular import between
+  // this file and stores/auth.js.
+  const raw = storage.getSync("falak_user_token");
   if (raw) {
     const token = decrypt(raw);
     if (token) config.headers.Authorization = `Bearer ${token}`;

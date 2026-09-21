@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 import { encrypt, decrypt } from "@/utils/crypto";
 import { client } from "@/services/dataClient";
+import storage from "@/storage";
 
 const STORAGE_KEY = "falak_user_token";
 
 function loadToken() {
-  const raw = localStorage.getItem(STORAGE_KEY);
+  const raw = storage.getSync(STORAGE_KEY);
   if (!raw) return null;
   try {
     return decrypt(raw) || null;
@@ -27,12 +28,12 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     setToken(token) {
       this.userToken = token;
-      localStorage.setItem(STORAGE_KEY, encrypt(token));
+      storage.set(STORAGE_KEY, encrypt(token));
     },
     clearToken() {
       this.userToken = null;
       this.user = null;
-      localStorage.removeItem(STORAGE_KEY);
+      storage.remove(STORAGE_KEY);
     },
     // Two-header auth: X-API-Key identifies the *app*, Authorization Bearer
     // identifies the *user*. Both are required by the Laravel API middleware.

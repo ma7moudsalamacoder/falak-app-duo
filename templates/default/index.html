@@ -4,23 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Falak App</title>
+    <style>
+      /* The theme is resolved from IndexedDB (async) before the app mounts;
+         keep the page hidden until then so the first paint is never the wrong
+         theme. main.js removes this class once the theme is applied. */
+      html.theme-loading {
+        visibility: hidden;
+      }
+    </style>
     <script>
-      // FOUC guard: paint with the right theme before the app mounts.
-      // Mirrors src/theme.js.getTheme() — keep in sync.
+      // Runs before first paint: hide the page until main.js has hydrated the
+      // IndexedDB store and applied the theme (see src/main.js).
       (function () {
-        var s;
-        try {
-          s = localStorage.getItem("falak_theme");
-        } catch (e) {}
-        if (s === "light") {
-          document.documentElement.classList.add("light");
-        } else if (s !== "dark") {
-          try {
-            if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-              document.documentElement.classList.add("light");
-            }
-          } catch (e) {}
-        }
+        var el = document.documentElement;
+        el.classList.add("theme-loading");
+        // Safety net: never leave the page hidden if the app fails to boot.
+        setTimeout(function () {
+          el.classList.remove("theme-loading");
+        }, 3000);
       })();
     </script>
   </head>

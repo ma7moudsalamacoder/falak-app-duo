@@ -3,7 +3,7 @@
 // When VITE_DATA_MODE=demo the whole app runs on the bundled demo data with no
 // Laravel backend or network required. This module mirrors the same routes the
 // real API exposes — auth/me, auth/login, profile/settings writes, entity
-// lists — and serves them from a localStorage-backed database seeded from
+// lists — and serves them from an IndexedDB-backed database seeded from
 // src/data/demoAccounts.js and src/data/demo/*.js. Flip VITE_DATA_MODE=live and
 // the app talks to the real backend again (see services/api.js).
 //
@@ -11,6 +11,7 @@
 // file discovers them via import.meta.glob — only files that exist at build
 // time are bundled, and nothing breaks when ones are missing.
 import { decrypt } from "@/utils/crypto";
+import storage from "@/storage";
 
 const DB_KEY = "falak_demo_db";
 const TOKEN_KEY = "falak_user_token";
@@ -105,16 +106,16 @@ function fingerprint() {
 
 let db = null;
 
-function loadDB() {
+// Loaded lazily on the first request (always after storage.ready() has run at
+// boot, so the mirror already holds any persisted DB). Falls back to a fresh
+// seed when the stored fingerprint no longer matches the bundled data.
+function ensureDB() {
+  if (db) return db;
   const fp = fingerprint();
-  try {
-    const raw = JSON.parse(localStorage.getItem(DB_KEY) || "null");
-    if (raw && raw.fingerprint === fp) {
-      db = raw;
-      return db;
-    }
-  } catch {
-    // Fall through to a fresh seed.
+  const raw = storage.getSync(DB_KEY, null);
+  if (raw && raw.fingerprint === fp) {
+    db = raw;
+    return db;
   }
   const collections = buildCollections();
   db = { fingerprint: fp, accounts: buildSeedAccounts(collections), collections };
@@ -123,14 +124,9 @@ function loadDB() {
 }
 
 function persist() {
-  try {
-    localStorage.setItem(DB_KEY, JSON.stringify(db));
-  } catch {
-    // Quota/storage unavailable — keep running in-memory only.
-  }
+  // Mirror updates synchronously; IndexedDB write happens in the background.
+  storage.set(DB_KEY, db);
 }
-
-loadDB();
 
 function fail(message, status = 400) {
   const error = new Error(message);
@@ -139,7 +135,7 @@ function fail(message, status = 400) {
 }
 
 function tokenFromStorage() {
-  const raw = localStorage.getItem(TOKEN_KEY);
+  const raw = storage.getSync(TOKEN_KEY);
   if (!raw) return null;
   const token = decrypt(raw);
   const match = /^demo\.(\d+)$/.exec(token || "");
@@ -148,7 +144,7 @@ function tokenFromStorage() {
 
 function requireAccount() {
   const id = tokenFromStorage();
-  const account = id && db.accounts.find((a) => String(a.id) === String(id));
+  const account = id && ensureDB().accounts.find((a) => String(a.id) === String(id));
   if (!account) fail("Unauthenticated", 401);
   return account;
 }
@@ -225,6 +221,7 @@ function overview() {
 
 const demoApi = {
   async get(url) {
+    ensureDB();
     const path = (url || "").split("?")[0];
     if (path === "/auth/me") return { data: publicUser(requireAccount()) };
     if (path === "/overview") return { data: overview() };
@@ -234,6 +231,7 @@ const demoApi = {
   },
 
   async post(url, body = {}) {
+    ensureDB();
     const path = (url || "").split("?")[0];
     switch (path) {
       case "/auth/login": {
@@ -331,6 +329,7 @@ const demoApi = {
   },
 
   async put(url, body = {}) {
+    ensureDB();
     const path = (url || "").split("?")[0];
     if (path === "/auth/me") {
       const account = requireAccount();
@@ -371,6 +370,7 @@ const demoApi = {
   },
 
   async delete(url) {
+    ensureDB();
     const entity = matchEntity((url || "").split("?")[0]);
     if (entity?.id !== null) {
       const rows = getEntityRows(entity.name);

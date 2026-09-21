@@ -13,7 +13,7 @@ integrations on the frontend side: **Ably** (realtime) and **Brevo**
 | Ably (realtime) | **New** — via Laravel Echo, authorized through the same API-key + user-token headers as the rest of the app |
 | Brevo (email/SMS) | Kept — calls go through Laravel, key never ships to the browser |
 | Laravel API auth | `X-API-Key` (app) + `Authorization: Bearer <token>` (user) |
-| AES-256 | Kept — encrypts the cached user token in localStorage |
+| AES-256 | Kept — encrypts the cached user token in IndexedDB |
 | Arabic/RTL | Kept — baked in via vue-i18n + postcss-rtlcss (opt-out: `--no-rtl` or the RTL prompt) |
 
 ## Install & run
@@ -43,7 +43,7 @@ Every request from `src/services/api.js` carries two headers:
 - `X-API-Key` — identifies this client app, set once per environment in `.env`.
 - `Authorization: Bearer <user token>` — identifies the logged-in user, issued
   by your Laravel `/auth/login` endpoint and stored AES-256 encrypted in
-  `localStorage` (see `src/utils/crypto.js` and `src/stores/auth.js`).
+  IndexedDB (see `src/utils/crypto.js`, `src/storage.js` and `src/stores/auth.js`).
 
 ## Ably (realtime)
 

@@ -1,4 +1,5 @@
 import { createI18n } from "vue-i18n";
+import storage from "@/storage";
 import ar from "./locales/ar.json";
 import de from "./locales/de.json";
 import en from "./locales/en.json";
@@ -18,24 +19,27 @@ export const SUPPORTED_LOCALES = [
 ];
 
 const STORAGE_KEY = "falak_locale";
-const stored = localStorage.getItem(STORAGE_KEY);
-const savedLocale = SUPPORTED_LOCALES.some((l) => l.code === stored) ? stored : "ar";
 
 const i18n = createI18n({
   legacy: false,
-  locale: savedLocale,
+  locale: "ar",
   fallbackLocale: "en",
   messages: { ar, de, en, es, fr, it, ru },
 });
 
 export function setLocale(locale) {
   i18n.global.locale.value = locale;
-  localStorage.setItem(STORAGE_KEY, locale);
+  storage.set(STORAGE_KEY, locale);
   document.documentElement.lang = locale;
   document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
 }
 
-// Apply on load
-setLocale(savedLocale);
+// Apply the persisted locale (falling back to the default) once storage is
+// ready. main.js awaits this before mounting so the first paint is correct.
+export async function initLocale() {
+  const stored = await storage.get(STORAGE_KEY);
+  const saved = SUPPORTED_LOCALES.some((l) => l.code === stored) ? stored : "ar";
+  setLocale(saved);
+}
 
 export default i18n;

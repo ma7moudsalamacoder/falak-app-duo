@@ -1,8 +1,9 @@
 import CryptoJS from "crypto-js";
 
 // AES-256-CBC, key/IV pulled from .env (generated fresh per-project by the CLI).
-// Use this for encrypting sensitive values you must keep in localStorage/sessionStorage
-// (e.g. a cached user token) — never for anything you'd rather the backend handle.
+// Use this for encrypting sensitive values you must keep client-side
+// (e.g. the cached user token in the IndexedDB store, src/storage.js) — never
+// for anything you'd rather the backend handle.
 const KEY = CryptoJS.enc.Hex.parse(import.meta.env.VITE_AES_KEY || "");
 const IV = CryptoJS.enc.Hex.parse(import.meta.env.VITE_AES_IV || "");
 
