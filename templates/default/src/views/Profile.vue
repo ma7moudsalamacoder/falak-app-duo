@@ -4,9 +4,12 @@ import { useI18n } from "vue-i18n";
 import { useAuthStore } from "@/stores/auth";
 import GlassCard from "@/components/GlassCard.vue";
 import { countries, citiesFor } from "@/data/locations";
+import { ROLES } from "@/data/roles";
 
 const { t } = useI18n();
 const auth = useAuthStore();
+
+const roleInfo = computed(() => ROLES.find((r) => r.key === auth.user?.role));
 
 const form = ref({
   name: "",
@@ -78,6 +81,16 @@ onMounted(async () => {
     <div class="mb-8 animate-fade-in-up motion-reduce:animate-none">
       <div class="section-head">
         <h1 class="text-2xl font-bold text-white">{{ t("profile.title") }}</h1>
+        <span
+          v-if="roleInfo"
+          class="mt-2 inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide ring-1"
+          :class="roleInfo.badge"
+        >
+          <span class="relative inline-flex h-1.5 w-1.5">
+            <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-current opacity-80"></span>
+          </span>
+          {{ t(roleInfo.label) }}
+        </span>
       </div>
       <p class="mt-1 text-sm text-gray-400">{{ t("profile.subtitle") }}</p>
     </div>

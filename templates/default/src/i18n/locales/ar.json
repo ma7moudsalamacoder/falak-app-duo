@@ -2,6 +2,20 @@
   "app": {
     "name": "فلك"
   },
+  "roles": {
+    "master": {
+      "title": "رئيسي"
+    },
+    "super_admin": {
+      "title": "مشرف عام"
+    },
+    "admin": {
+      "title": "مدير"
+    },
+    "user": {
+      "title": "مستخدم"
+    }
+  },
   "common": {
     "loading": "جارٍ التحميل...",
     "saving": "جارٍ الحفظ...",
@@ -91,7 +105,8 @@
       "2": "مقبولة",
       "3": "جيدة",
       "4": "قوية"
-    }
+    },
+    "role": "الدور"
   },
   "recover": {
     "title": "استعادة كلمة المرور",
@@ -184,7 +199,8 @@
       "whatsappHandle": "رقم واتساب",
       "telegramPlaceholder": "@yourusername",
       "whatsappPlaceholder": "+201234567890"
-    }
+    },
+    "role": "الدور"
   },
   "security": {
     "title": "الأمان",

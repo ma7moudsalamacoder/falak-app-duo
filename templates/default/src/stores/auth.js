@@ -19,6 +19,11 @@ export const useAuthStore = defineStore("auth", {
     userToken: loadToken(),
     user: null,
   }),
+  getters: {
+    // Role is part of the user account; comes from the API user payload
+    // (or was picked at registration when UserRole support is enabled).
+    role: (state) => state.user?.role || null,
+  },
   actions: {
     setToken(token) {
       this.userToken = token;

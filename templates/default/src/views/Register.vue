@@ -6,6 +6,7 @@ import { useAuthStore } from "@/stores/auth";
 import AuthLayout from "@/components/AuthLayout.vue";
 import SocialIcon from "@/components/SocialIcon.vue";
 import { useRipple } from "@/composables/useRipple";
+import { ROLES } from "@/data/roles";
 
 const { t, locale } = useI18n();
 const router = useRouter();
@@ -20,6 +21,9 @@ const showPassword = ref(false);
 const error = ref("");
 const loading = ref(false);
 const socialBusy = ref("");
+// When UserRole support is on, new accounts carry a role; ROLES is empty when
+// the feature was not picked at scaffold time.
+const role = ref(ROLES[0]?.key || "");
 
 const { ripples, spawnRipple, removeRipple } = useRipple();
 
@@ -45,14 +49,16 @@ async function submit() {
   }
   loading.value = true;
   try {
-    await auth.register({
+    const payload = {
       name: name.value,
       identifier: email.value.trim(),
       email: email.value.trim(),
       phone: phone.value.trim(),
       password: password.value,
       locale: locale.value,
-    });
+    };
+    if (ROLES.length) payload.role = role.value;
+    await auth.register(payload);
     router.push({ name: "home" });
   } catch (e) {
     error.value = t("register.error");
@@ -115,6 +121,15 @@ async function social(provider) {
           class="glass-input"
           autocomplete="name"
         />
+      </label>
+
+      <label v-if="ROLES.length > 1" class="block">
+        <span class="field-label">{{ t("register.role") }}</span>
+        <select v-model="role" class="glass-select">
+          <option v-for="r in ROLES" :key="r.key" :value="r.key">
+            {{ t(r.label) }}
+          </option>
+        </select>
       </label>
 
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">

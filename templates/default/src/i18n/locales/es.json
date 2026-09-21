@@ -2,6 +2,20 @@
   "app": {
     "name": "Falak"
   },
+  "roles": {
+    "master": {
+      "title": "Maestro"
+    },
+    "super_admin": {
+      "title": "Super Adm."
+    },
+    "admin": {
+      "title": "Admin"
+    },
+    "user": {
+      "title": "Usuario"
+    }
+  },
   "common": {
     "loading": "Cargando...",
     "saving": "Guardando...",
@@ -91,7 +105,8 @@
       "2": "Aceptable",
       "3": "Buena",
       "4": "Fuerte"
-    }
+    },
+    "role": "Rol"
   },
   "recover": {
     "title": "Recuperar contraseña",
@@ -184,7 +199,8 @@
       "whatsappHandle": "Número de WhatsApp",
       "telegramPlaceholder": "@tuusuario",
       "whatsappPlaceholder": "+201234567890"
-    }
+    },
+    "role": "Rol"
   },
   "security": {
     "title": "Seguridad",

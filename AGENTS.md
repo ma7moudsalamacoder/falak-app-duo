@@ -22,6 +22,13 @@ copying `templates/default/`. The repo is **not** a Vue app — the actual app
   `const { t, locale } = useI18n();`, `const locales = SUPPORTED_LOCALES;`, and
   the `<select v-if="locales.length > 1">` switcher stable or the replacements
   silently break.
+- The interactive flow additionally asks about UserRole support (roles
+  `master`/`super_admin`/`admin`/`user`), demo accounts, and demo-data
+  entities. Providing any of `--roles`/`--demo-accounts`/`--demo-data` skips
+  those prompts (services/languages/API URL then use defaults); `--yes` runs
+  with the minimal scaffold (roles/demo all off) and auto-installs. When a
+  feature flag is used the post-scaffold "how to start" prompt is skipped and
+  dependencies are installed automatically.
 - After scaffolding the CLI prompts to auto-run `npm install` (and optionally
   `npm run dev`); `--yes` runs `npm install` automatically. Don't add install
   logic elsewhere.
@@ -47,6 +54,27 @@ copying `templates/default/`. The repo is **not** a Vue app — the actual app
 - `src/services/ably.js` and `src/services/brevo.js` are **deleted** when a
   user deselects the service. Template code must only import them on demand
   (never statically at module load), or account for the deletion.
+- Roles, demo accounts, and demo data are opt-in (interactive prompts or
+  `--roles <list>`, `--demo-accounts`, `--demo-data <list>`); `--yes` keeps
+  them all OFF. Slicing:
+  - `src/data/roles.js` is **always rewritten** via `buildRolesModule()` —
+    kept to the picked role subset, or an empty `ROLES = []` when off.
+    `Register.vue`, `Profile.vue`, and the auth store import it statically, so
+    it must never be deleted. `Register.vue` shows its role `<select>` when
+    `ROLES.length > 1` and only adds `role` to the register payload when
+    `ROLES.length`; keep that contract.
+  - `src/data/demoAccounts.js` is rewritten by `buildDemoAccountsModule()` to
+    one account per picked role (or a single normal demo user when roles are
+    off) and **deleted** when dummy accounts aren't wanted. Nothing imports it
+    (static data only — no login buttons).
+  - `src/data/demo/*.js` are per-entity static modules; unselected entities
+    are deleted and the whole `demo/` dir is removed when demo data is off.
+    Nothing imports them.
+  - Demo account data carries `profile` (name/phone/country/city/channel) plus
+    `settings` (`notification_preferences`, `two_factor_enabled`, `ai_agent`,
+    `telegram`) mirroring the settings dialogs' field shapes.
+- Role labels are vue-i18n keys (`roles.*.title`) — a new role needs a key in
+  ALL 7 bundles (see i18n section).
 - Keep `ably.js` wiring channel auth through the shared `api` axios client
   (`api.post("/broadcasting/auth")`) — the same `X-API-Key` + bearer headers
   gate realtime auth.
